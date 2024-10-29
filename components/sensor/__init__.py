@@ -12,7 +12,7 @@ CONFIG_SCHEMA = cv.Schema(
     {
         cv.GenerateID(): cv.declare_id(MetrifulComponent),
     }
-).extend(cv.COMPONENT_SCHEMA).extend(i2c.i2c_device_schema(0x71))
+).extend(cv.COMPONENT_SCHEMA)
 
 
 async def to_code(config):
