@@ -9,12 +9,12 @@ DEPENDENCIES = ["i2c"]
 metriful_component_ns = cg.esphome_ns.namespace("MS430_ESPHome")
 MetrifulComponent = metriful_component_ns.class_("MS430", cg.Component, i2c.I2CDevice)
 
-CONFIG_SCHEMA = cv.Schema(
-    {
-        cv.GenerateID(): cv.declare_id(MetrifulComponent),
-    }
-).extend(cv.COMPONENT_SCHEMA).extend(i2c.i2c_device_schema(0x71))
 
+CONFIG_SCHEMA = (
+    cv.Schema({cv.GenerateID(): cv.declare_id(EmptyI2CComponent)})
+    .extend(cv.COMPONENT_SCHEMA)
+    .extend(i2c.i2c_device_schema(0x01))
+)
 
 async def to_code(config):
     logging.info("I'm here")
