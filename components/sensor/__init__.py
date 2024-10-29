@@ -6,13 +6,13 @@ from esphome.const import CONF_ID
 DEPENDENCIES = ["i2c"]
 
 metriful_component_ns = cg.esphome_ns.namespace("MS430_ESPHome")
-MetrifulComponent = metriful_component_ns.class_("MS430", cg.Component, i2c.I2CDevice)
+MetrifulComponent = metriful_component_ns.class_("MS430", cg.Component)
 
 CONFIG_SCHEMA = cv.Schema(
     {
         cv.GenerateID(): cv.declare_id(MetrifulComponent),
     }
-).extend(cv.COMPONENT_SCHEMA)
+).extend(cv.COMPONENT_SCHEMA).extend(i2c.i2c_device_schema(0x71))
 
 
 async def to_code(config):
