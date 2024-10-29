@@ -22,7 +22,6 @@
 #include <inttypes.h>
 #include <stdio.h>
 #include "sensor_constants.h"
-#include "host_pin_definitions.h"
 
 // Un-comment the following line to display temperatures in Fahrenheit
 // else they will be in Celsius
