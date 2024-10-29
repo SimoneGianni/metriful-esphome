@@ -11,7 +11,7 @@ MetrifulComponent = metriful_component_ns.class_("MS430", cg.Component, i2c.I2CD
 
 
 CONFIG_SCHEMA = (
-    cv.Schema({cv.GenerateID(): cv.declare_id(EmptyI2CComponent)})
+    cv.Schema({cv.GenerateID(): cv.declare_id(MetrifulComponent)})
     .extend(cv.COMPONENT_SCHEMA)
     .extend(i2c.i2c_device_schema(0x01))
 )
