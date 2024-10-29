@@ -2,11 +2,12 @@ import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.components import i2c, sensor
 from esphome.const import CONF_ID
+import logging
 
 DEPENDENCIES = ["i2c"]
 
 metriful_component_ns = cg.esphome_ns.namespace("MS430_ESPHome")
-MetrifulComponent = metriful_component_ns.class_("MS430", cg.Component)
+MetrifulComponent = metriful_component_ns.class_("MS430", cg.Component, i2c.I2CDevice)
 
 CONFIG_SCHEMA = cv.Schema(
     {
@@ -16,6 +17,7 @@ CONFIG_SCHEMA = cv.Schema(
 
 
 async def to_code(config):
+    logging.info("I'm here")
     var = cg.new_Pvariable(config[CONF_ID])
     await cg.register_component(var, config)
     await i2c.register_i2c_device(var, config)
