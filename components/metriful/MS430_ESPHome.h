@@ -68,183 +68,187 @@ class MS430 :  public i2c::I2CDevice, public Component
       }
     }
 
+    void dump_config() {
+      ESP_LOGCONFIG(TAG, "In dump config");
+    }
+
     void setupSensors() {
       ESP_LOGCONFIG(TAG, "setup sensors BEGIN");
       // Temperature sensor
-      App.register_sensor(temperature_s);
       temperature_s->set_name("TEST Temperature");
       temperature_s->set_unit_of_measurement("°C");
       temperature_s->set_accuracy_decimals(1);
       temperature_s->set_icon("mdi:thermometer");
       temperature_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
       temperature_s->set_device_class("temperature");
+      App.register_sensor(temperature_s);
 
       // Air pressure sensor
-      App.register_sensor(pressure_s);
       pressure_s->set_name("Air pressure");
       pressure_s->set_unit_of_measurement("Pa");
       pressure_s->set_accuracy_decimals(0);
       pressure_s->set_icon("mdi:weather-partly-rainy");
       pressure_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
       pressure_s->set_device_class("atmospheric_pressure");
+      App.register_sensor(pressure_s);
 
 
       // Humidity sensor
-      App.register_sensor(humidity_s);
       humidity_s->set_name("Humidity");
       humidity_s->set_unit_of_measurement("%");
       humidity_s->set_accuracy_decimals(1);
       humidity_s->set_icon("mdi:cloud-percent");
       humidity_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
       humidity_s->set_device_class("humidity");
+      App.register_sensor(humidity_s);
 
       // Gas sensor
-      App.register_sensor(gas_s);
       gas_s->set_name("Gas sensor resistance");
       gas_s->set_unit_of_measurement("Ω");
       gas_s->set_accuracy_decimals(0);
       gas_s->set_icon("mdi:scent");
       gas_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
       gas_s->set_device_class("aqi");
+      App.register_sensor(gas_s);
 
       // Particle sensor duty cycle
-      App.register_sensor(particle_duty_s);
       particle_duty_s->set_name("Particle sensor duty cycle");
       particle_duty_s->set_unit_of_measurement("%");
       particle_duty_s->set_accuracy_decimals(2);
       particle_duty_s->set_icon("mdi:square-wave");
       particle_duty_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
       particle_duty_s->set_device_class("pm25");
+      App.register_sensor(particle_duty_s);
 
       // Particle concentration
-      App.register_sensor(particle_conc_s);
       particle_conc_s->set_name("Particle concentration");
       particle_conc_s->set_unit_of_measurement("μg/m³");
       particle_conc_s->set_accuracy_decimals(2);
       particle_conc_s->set_icon("mdi:chart-bubble");
       particle_conc_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
       particle_conc_s->set_device_class("pm25");
+      App.register_sensor(particle_conc_s);
 
       // Air quality index
-      App.register_sensor(aqi_s);
       aqi_s->set_name("Air quality index");
       aqi_s->set_accuracy_decimals(1);
       aqi_s->set_icon("mdi:flower-tulip-outline");
       aqi_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
       aqi_s->set_device_class("aqi");
+      App.register_sensor(aqi_s);
 
       // Estimated CO2
-      App.register_sensor(CO2e_s);
       CO2e_s->set_name("Estimated CO2");
       CO2e_s->set_unit_of_measurement("ppm");
       CO2e_s->set_accuracy_decimals(1);
       CO2e_s->set_icon("mdi:molecule-co2");
       CO2e_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
       CO2e_s->set_device_class("carbon_dioxide");
+      App.register_sensor(CO2e_s);
 
       // Equivalent breath VOC
-      App.register_sensor(bVOC_s);
       bVOC_s->set_name("Equivalent breath VOC");
       bVOC_s->set_unit_of_measurement("ppm");
       bVOC_s->set_accuracy_decimals(2);
       bVOC_s->set_icon("mdi:account-voice");
       bVOC_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
       bVOC_s->set_device_class("volatile_organic_compounds_parts");
+      App.register_sensor(bVOC_s);
 
       // Air quality accuracy
-      App.register_sensor(aqi_acc_s);
       aqi_acc_s->set_name("Air quality accuracy");
       aqi_acc_s->set_accuracy_decimals(0);
       aqi_acc_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
+      App.register_sensor(aqi_acc_s);
 
       // Illuminance
-      App.register_sensor(illuminance_s);
       illuminance_s->set_name("Illuminance");
       illuminance_s->set_unit_of_measurement("lux");
       illuminance_s->set_accuracy_decimals(2);
       illuminance_s->set_icon("mdi:white-balance-sunny");
       illuminance_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
       illuminance_s->set_device_class("illuminance");
+      App.register_sensor(illuminance_s);
 
       // White light level
-      App.register_sensor(w_light_s);
       w_light_s->set_name("White light level");
       w_light_s->set_accuracy_decimals(0);
       w_light_s->set_icon("mdi:circle-outline");
       w_light_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
       w_light_s->set_device_class("illuminance");
+      App.register_sensor(w_light_s);
 
       // Sound pressure level
-      App.register_sensor(sound_spl_s);
       sound_spl_s->set_name("Sound pressure level");
       sound_spl_s->set_unit_of_measurement("dBA");
       sound_spl_s->set_accuracy_decimals(1);
       sound_spl_s->set_icon("mdi:microphone");
       sound_spl_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
       sound_spl_s->set_device_class("sound_pressure");
+      App.register_sensor(sound_spl_s);
 
       // Peak sound amplitude
-      App.register_sensor(sound_peak_s);
       sound_peak_s->set_name("Peak sound amplitude");
       sound_peak_s->set_unit_of_measurement("mPa");
       sound_peak_s->set_accuracy_decimals(2);
       sound_peak_s->set_icon("mdi:waveform");
       sound_peak_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
       sound_peak_s->set_device_class("sound_pressure");
+      App.register_sensor(sound_peak_s);
 
       // Sound bands SPL sensors
-      App.register_sensor(sound_bands_s[0]);
       sound_bands_s[0]->set_name("SPL at 125 Hz");
       sound_bands_s[0]->set_unit_of_measurement("dB");
       sound_bands_s[0]->set_accuracy_decimals(1);
       sound_bands_s[0]->set_icon("mdi:sine-wave");
       sound_bands_s[0]->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
       sound_bands_s[0]->set_device_class("sound_pressure");
+      App.register_sensor(sound_bands_s[0]);
 
       // SPL at 250 Hz
-      App.register_sensor(sound_bands_s[1]);
       sound_bands_s[1]->set_name("SPL at 250 Hz");
       sound_bands_s[1]->set_unit_of_measurement("dB");
       sound_bands_s[1]->set_accuracy_decimals(1);
       sound_bands_s[1]->set_icon("mdi:sine-wave");
       sound_bands_s[1]->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
       sound_bands_s[1]->set_device_class("sound_pressure");
+      App.register_sensor(sound_bands_s[1]);
 
       // SPL at 500 Hz
-      App.register_sensor(sound_bands_s[2]);
       sound_bands_s[2]->set_name("SPL at 500 Hz");
       sound_bands_s[2]->set_unit_of_measurement("dB");
       sound_bands_s[2]->set_accuracy_decimals(1);
       sound_bands_s[2]->set_icon("mdi:sine-wave");
       sound_bands_s[2]->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
       sound_bands_s[2]->set_device_class("sound_pressure");
+      App.register_sensor(sound_bands_s[2]);
 
       // SPL at 1000 Hz
-      App.register_sensor(sound_bands_s[3]);
       sound_bands_s[3]->set_name("SPL at 1000 Hz");
       sound_bands_s[3]->set_unit_of_measurement("dB");
       sound_bands_s[3]->set_accuracy_decimals(1);
       sound_bands_s[3]->set_icon("mdi:sine-wave");
       sound_bands_s[3]->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
       sound_bands_s[3]->set_device_class("sound_pressure");
+      App.register_sensor(sound_bands_s[3]);
 
       // SPL at 2000 Hz
-      App.register_sensor(sound_bands_s[4]);
       sound_bands_s[4]->set_name("SPL at 2000 Hz");
       sound_bands_s[4]->set_unit_of_measurement("dB");
       sound_bands_s[4]->set_accuracy_decimals(1);
       sound_bands_s[4]->set_icon("mdi:sine-wave");
       sound_bands_s[4]->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
       sound_bands_s[4]->set_device_class("sound_pressure");
+      App.register_sensor(sound_bands_s[4]);
 
       // SPL at 4000 Hz
-      App.register_sensor(sound_bands_s[5]);
       sound_bands_s[5]->set_name("SPL at 4000 Hz");
       sound_bands_s[5]->set_unit_of_measurement("dB");
       sound_bands_s[5]->set_accuracy_decimals(1);
       sound_bands_s[5]->set_icon("mdi:sine-wave");
       sound_bands_s[5]->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
       sound_bands_s[5]->set_device_class("sound_pressure");
+      App.register_sensor(sound_bands_s[5]);
 
       ESP_LOGCONFIG(TAG, "setup sensors END");
     }
