@@ -88,7 +88,7 @@ class MS430 :  public i2c::I2CDevice, public Component
       pressure_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
       pressure_s->set_device_class("atmospheric_pressure");
 
-      /*
+
       // Humidity sensor
       App.register_sensor(humidity_s);
       humidity_s->set_name("Humidity");
@@ -245,7 +245,7 @@ class MS430 :  public i2c::I2CDevice, public Component
       sound_bands_s[5]->set_icon("mdi:sine-wave");
       sound_bands_s[5]->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
       sound_bands_s[5]->set_device_class("sound_pressure");
-      */
+
       ESP_LOGCONFIG(TAG, "setup sensors END");
     }
 
@@ -259,6 +259,21 @@ class MS430 :  public i2c::I2CDevice, public Component
     {
       enableSerial = false;
       setupSensors();
+      temperature_s->publish_state(NAN);
+      pressure_s->publish_state(NAN);
+      humidity_s->publish_state(NAN);
+      particle_duty_s->publish_state(NAN);
+      particle_conc_s->publish_state(NAN);
+      gas_s->publish_state(NAN);
+      aqi_s->publish_state(NAN);
+      CO2e_s->publish_state(NAN);
+      bVOC_s->publish_state(NAN);
+      aqi_acc_s->publish_state(NAN);
+      illuminance_s->publish_state(NAN);
+      w_light_s->publish_state(NAN);
+      sound_spl_s->publish_state(NAN);
+      sound_peak_s->publish_state(NAN);
+
       //SensorHardwareSetup(I2C_ADDRESS);
       /*
       uint8_t particleSensor = PARTICLE_SENSOR;
