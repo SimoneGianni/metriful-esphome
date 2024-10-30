@@ -28,6 +28,8 @@
 
 extern bool enableSerial;
 
+namespace esphome {
+
 class MS430 :  public i2c::I2CDevice, public Component
 {
   public:
@@ -326,3 +328,5 @@ class MS430 :  public i2c::I2CDevice, public Component
     }
     */
 };
+
+} // namespace esphome
