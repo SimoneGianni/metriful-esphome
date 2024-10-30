@@ -96,7 +96,7 @@ class MS430 :  public i2c::I2CDevice, public Component
 
       // Humidity sensor
       humidity_s->set_name("Humidity");
-      humidity_s->set_object_id("humidity")
+      humidity_s->set_object_id("humidity");
       humidity_s->set_unit_of_measurement("%");
       humidity_s->set_accuracy_decimals(1);
       humidity_s->set_icon("mdi:cloud-percent");
