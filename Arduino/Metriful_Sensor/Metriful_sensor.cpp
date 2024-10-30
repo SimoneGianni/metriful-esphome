@@ -15,7 +15,7 @@
 #include <stdarg.h>
 
 char strbuf[100] = {0};
-bool enableSerial = true;
+
 
 void SensorHardwareSetup(uint8_t i2c_7bit_address)
 {

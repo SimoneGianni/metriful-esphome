@@ -83,7 +83,6 @@
 
 // Values for enabling/disabling of sensor functions
 #define ENABLED  1
-#define DISABLED 0
 
 // Device modes
 #define STANDBY_MODE 0

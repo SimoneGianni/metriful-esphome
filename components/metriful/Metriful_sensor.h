@@ -271,4 +271,7 @@ float convertEncodedTemperatureToFloat(uint8_t T_C_int_with_sign,
                                        uint8_t T_C_fr_1dp);
 const char * getTemperature(const AirData_t * pAirData, uint8_t * T_intPart, 
                             uint8_t * T_fractionalPart, bool * isPositive);
+
+bool enableSerial = true;
+
 #endif
