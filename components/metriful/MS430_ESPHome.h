@@ -69,6 +69,7 @@ class MS430 :  public i2c::I2CDevice, public Component
 
     void setupSensors() {
       ESP_LOGCONFIG(TAG, "setup sensors BEGIN");
+      /*
       // Temperature sensor
       App.register_sensor(temperature_s);
       temperature_s->set_name("TEST Temperature");
@@ -77,6 +78,7 @@ class MS430 :  public i2c::I2CDevice, public Component
       temperature_s->set_icon("mdi:thermometer");
       temperature_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
       temperature_s->set_device_class("temperature");
+      */
 
       // Air pressure sensor
       App.register_sensor(pressure_s);
@@ -87,6 +89,7 @@ class MS430 :  public i2c::I2CDevice, public Component
       pressure_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
       pressure_s->set_device_class("atmospheric_pressure");
 
+      /*
       // Humidity sensor
       App.register_sensor(humidity_s);
       humidity_s->set_name("Humidity");
@@ -243,7 +246,7 @@ class MS430 :  public i2c::I2CDevice, public Component
       sound_bands_s[5]->set_icon("mdi:sine-wave");
       sound_bands_s[5]->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
       sound_bands_s[5]->set_device_class("sound_pressure");
-      
+      */
       ESP_LOGCONFIG(TAG, "setup sensors END");
     }
 
