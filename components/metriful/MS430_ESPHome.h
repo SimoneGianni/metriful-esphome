@@ -14,6 +14,7 @@
 */
 
 #include "esphome.h"
+#include "esphome/core/log.h"
 #include <stdint.h>
 #include "Metriful_sensor.h"
 #include "sensor_constants.h"
@@ -69,7 +70,6 @@ class MS430 :  public i2c::I2CDevice, public Component
 
     void setupSensors() {
       ESP_LOGCONFIG(TAG, "setup sensors BEGIN");
-      /*
       // Temperature sensor
       App.register_sensor(temperature_s);
       temperature_s->set_name("TEST Temperature");
@@ -78,7 +78,6 @@ class MS430 :  public i2c::I2CDevice, public Component
       temperature_s->set_icon("mdi:thermometer");
       temperature_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
       temperature_s->set_device_class("temperature");
-      */
 
       // Air pressure sensor
       App.register_sensor(pressure_s);
