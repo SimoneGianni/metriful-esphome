@@ -189,58 +189,58 @@ class MS430 :  public i2c::I2CDevice, public Component
       sound_peak_s->set_device_class("sound_pressure");
 
       // Sound bands SPL sensors
-      App.register_sensor(sound_bands_s_0);
-      sound_bands_s_0->set_name("SPL at 125 Hz");
-      sound_bands_s_0->set_unit_of_measurement("dB");
-      sound_bands_s_0->set_accuracy_decimals(1);
-      sound_bands_s_0->set_icon("mdi:sine-wave");
-      sound_bands_s_0->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
-      sound_bands_s_0->set_device_class("sound_pressure");
+      App.register_sensor(sound_bands_s[0]);
+      sound_bands_s[0]->set_name("SPL at 125 Hz");
+      sound_bands_s[0]->set_unit_of_measurement("dB");
+      sound_bands_s[0]->set_accuracy_decimals(1);
+      sound_bands_s[0]->set_icon("mdi:sine-wave");
+      sound_bands_s[0]->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
+      sound_bands_s[0]->set_device_class("sound_pressure");
 
       // SPL at 250 Hz
-      App.register_sensor(sound_bands_s_1);
-      sound_bands_s_1->set_name("SPL at 250 Hz");
-      sound_bands_s_1->set_unit_of_measurement("dB");
-      sound_bands_s_1->set_accuracy_decimals(1);
-      sound_bands_s_1->set_icon("mdi:sine-wave");
-      sound_bands_s_1->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
-      sound_bands_s_1->set_device_class("sound_pressure");
+      App.register_sensor(sound_bands_s[1]);
+      sound_bands_s[1]->set_name("SPL at 250 Hz");
+      sound_bands_s[1]->set_unit_of_measurement("dB");
+      sound_bands_s[1]->set_accuracy_decimals(1);
+      sound_bands_s[1]->set_icon("mdi:sine-wave");
+      sound_bands_s[1]->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
+      sound_bands_s[1]->set_device_class("sound_pressure");
 
       // SPL at 500 Hz
-      App.register_sensor(sound_bands_s_2);
-      sound_bands_s_2->set_name("SPL at 500 Hz");
-      sound_bands_s_2->set_unit_of_measurement("dB");
-      sound_bands_s_2->set_accuracy_decimals(1);
-      sound_bands_s_2->set_icon("mdi:sine-wave");
-      sound_bands_s_2->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
-      sound_bands_s_2->set_device_class("sound_pressure");
+      App.register_sensor(sound_bands_s[2]);
+      sound_bands_s[2]->set_name("SPL at 500 Hz");
+      sound_bands_s[2]->set_unit_of_measurement("dB");
+      sound_bands_s[2]->set_accuracy_decimals(1);
+      sound_bands_s[2]->set_icon("mdi:sine-wave");
+      sound_bands_s[2]->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
+      sound_bands_s[2]->set_device_class("sound_pressure");
 
       // SPL at 1000 Hz
-      App.register_sensor(sound_bands_s_3);
-      sound_bands_s_3->set_name("SPL at 1000 Hz");
-      sound_bands_s_3->set_unit_of_measurement("dB");
-      sound_bands_s_3->set_accuracy_decimals(1);
-      sound_bands_s_3->set_icon("mdi:sine-wave");
-      sound_bands_s_3->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
-      sound_bands_s_3->set_device_class("sound_pressure");
+      App.register_sensor(sound_bands_s[3]);
+      sound_bands_s[3]->set_name("SPL at 1000 Hz");
+      sound_bands_s[3]->set_unit_of_measurement("dB");
+      sound_bands_s[3]->set_accuracy_decimals(1);
+      sound_bands_s[3]->set_icon("mdi:sine-wave");
+      sound_bands_s[3]->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
+      sound_bands_s[3]->set_device_class("sound_pressure");
 
       // SPL at 2000 Hz
-      App.register_sensor(sound_bands_s_4);
-      sound_bands_s_4->set_name("SPL at 2000 Hz");
-      sound_bands_s_4->set_unit_of_measurement("dB");
-      sound_bands_s_4->set_accuracy_decimals(1);
-      sound_bands_s_4->set_icon("mdi:sine-wave");
-      sound_bands_s_4->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
-      sound_bands_s_4->set_device_class("sound_pressure");
+      App.register_sensor(sound_bands_s[4]);
+      sound_bands_s[4]->set_name("SPL at 2000 Hz");
+      sound_bands_s[4]->set_unit_of_measurement("dB");
+      sound_bands_s[4]->set_accuracy_decimals(1);
+      sound_bands_s[4]->set_icon("mdi:sine-wave");
+      sound_bands_s[4]->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
+      sound_bands_s[4]->set_device_class("sound_pressure");
 
       // SPL at 4000 Hz
-      App.register_sensor(sound_bands_s_5);
-      sound_bands_s_5->set_name("SPL at 4000 Hz");
-      sound_bands_s_5->set_unit_of_measurement("dB");
-      sound_bands_s_5->set_accuracy_decimals(1);
-      sound_bands_s_5->set_icon("mdi:sine-wave");
-      sound_bands_s_5->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
-      sound_bands_s_5->set_device_class("sound_pressure");
+      App.register_sensor(sound_bands_s[5]);
+      sound_bands_s[5]->set_name("SPL at 4000 Hz");
+      sound_bands_s[5]->set_unit_of_measurement("dB");
+      sound_bands_s[5]->set_accuracy_decimals(1);
+      sound_bands_s[5]->set_icon("mdi:sine-wave");
+      sound_bands_s[5]->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
+      sound_bands_s[5]->set_device_class("sound_pressure");
     }
 
     float get_setup_priority() const override
