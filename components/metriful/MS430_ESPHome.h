@@ -71,7 +71,7 @@ class MS430 :  public i2c::I2CDevice, public Component
       ESP_LOGI(TAG, "setup sensors BEGIN");
       // Temperature sensor
       App.register_sensor(temperature_s);
-      temperature_s->set_name("Temperature");
+      temperature_s->set_name("TEST Temperature");
       temperature_s->set_unit_of_measurement("°C");
       temperature_s->set_accuracy_decimals(1);
       temperature_s->set_icon("mdi:thermometer");
