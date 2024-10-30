@@ -68,217 +68,39 @@ class MS430 :  public i2c::I2CDevice, public Component
       }
     }
 
+    void set_temperature_sensor(Sensor *sensor) { this->temperature_s = sensor; }
+    void set_pressure_sensor(Sensor *sensor) { this->pressure_s = sensor; }
+    void set_humidity_sensor(Sensor *sensor) { this->humidity_s = sensor; }
+    void set_particle_duty_sensor(Sensor *sensor) { this->particle_duty_s = sensor; }
+    void set_particle_conc_sensor(Sensor *sensor) { this->particle_conc_s = sensor; }
+    void set_gas_sensor(Sensor *sensor) { this->gas_s = sensor; }
+    void set_aqi_sensor(Sensor *sensor) { this->aqi_s = sensor; }
+    void set_co2e_sensor(Sensor *sensor) { this->CO2e_s = sensor; }
+    void set_bvoc_sensor(Sensor *sensor) { this->bVOC_s = sensor; }
+    void set_aqi_acc_sensor(Sensor *sensor) { this->aqi_acc_s = sensor; }
+    void set_illuminance_sensor(Sensor *sensor) { this->illuminance_s = sensor; }
+    void set_w_light_sensor(Sensor *sensor) { this->w_light_s = sensor; }
+    void set_sound_spl_sensor(Sensor *sensor) { this->sound_spl_s = sensor; }
+    void set_sound_peak_sensor(Sensor *sensor) { this->sound_peak_s = sensor; }
+
+    // Sound band sensor setters for frequency bands
+    void set_sound_band_sensor(uint8_t index, Sensor *sensor) {
+      if (index < SOUND_FREQ_BANDS) {
+        this->sound_bands_s[index] = sensor;
+      }
+    }
+
     void dump_config() {
       ESP_LOGCONFIG(TAG, "In dump config");
     }
 
-    void setupSensors() {
-      ESP_LOGCONFIG(TAG, "setup sensors BEGIN");
-      // Temperature sensor
-      temperature_s->set_name("TEST Temperature");
-      temperature_s->set_unit_of_measurement("°C");
-      temperature_s->set_accuracy_decimals(1);
-      temperature_s->set_icon("mdi:thermometer");
-      temperature_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
-      temperature_s->set_device_class("temperature");
-      App.register_sensor(temperature_s);
-
-      // Air pressure sensor
-      pressure_s->set_name("Air pressure");
-      pressure_s->set_object_id("air_pressure");
-      pressure_s->set_unit_of_measurement("Pa");
-      pressure_s->set_accuracy_decimals(0);
-      pressure_s->set_icon("mdi:weather-partly-rainy");
-      pressure_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
-      pressure_s->set_device_class("atmospheric_pressure");
-      App.register_sensor(pressure_s);
-
-
-      // Humidity sensor
-      humidity_s->set_name("Humidity");
-      humidity_s->set_object_id("humidity");
-      humidity_s->set_unit_of_measurement("%");
-      humidity_s->set_accuracy_decimals(1);
-      humidity_s->set_icon("mdi:cloud-percent");
-      humidity_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
-      humidity_s->set_device_class("humidity");
-      App.register_sensor(humidity_s);
-
-      // Gas sensor
-      gas_s->set_name("Gas sensor resistance");
-      gas_s->set_unit_of_measurement("Ω");
-      gas_s->set_accuracy_decimals(0);
-      gas_s->set_icon("mdi:scent");
-      gas_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
-      gas_s->set_device_class("aqi");
-      App.register_sensor(gas_s);
-
-      // Particle sensor duty cycle
-      particle_duty_s->set_name("Particle sensor duty cycle");
-      particle_duty_s->set_unit_of_measurement("%");
-      particle_duty_s->set_accuracy_decimals(2);
-      particle_duty_s->set_icon("mdi:square-wave");
-      particle_duty_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
-      particle_duty_s->set_device_class("pm25");
-      App.register_sensor(particle_duty_s);
-
-      // Particle concentration
-      particle_conc_s->set_name("Particle concentration");
-      particle_conc_s->set_unit_of_measurement("μg/m³");
-      particle_conc_s->set_accuracy_decimals(2);
-      particle_conc_s->set_icon("mdi:chart-bubble");
-      particle_conc_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
-      particle_conc_s->set_device_class("pm25");
-      App.register_sensor(particle_conc_s);
-
-      // Air quality index
-      aqi_s->set_name("Air quality index");
-      aqi_s->set_accuracy_decimals(1);
-      aqi_s->set_icon("mdi:flower-tulip-outline");
-      aqi_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
-      aqi_s->set_device_class("aqi");
-      App.register_sensor(aqi_s);
-
-      // Estimated CO2
-      CO2e_s->set_name("Estimated CO2");
-      CO2e_s->set_unit_of_measurement("ppm");
-      CO2e_s->set_accuracy_decimals(1);
-      CO2e_s->set_icon("mdi:molecule-co2");
-      CO2e_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
-      CO2e_s->set_device_class("carbon_dioxide");
-      App.register_sensor(CO2e_s);
-
-      // Equivalent breath VOC
-      bVOC_s->set_name("Equivalent breath VOC");
-      bVOC_s->set_unit_of_measurement("ppm");
-      bVOC_s->set_accuracy_decimals(2);
-      bVOC_s->set_icon("mdi:account-voice");
-      bVOC_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
-      bVOC_s->set_device_class("volatile_organic_compounds_parts");
-      App.register_sensor(bVOC_s);
-
-      // Air quality accuracy
-      aqi_acc_s->set_name("Air quality accuracy");
-      aqi_acc_s->set_accuracy_decimals(0);
-      aqi_acc_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
-      App.register_sensor(aqi_acc_s);
-
-      // Illuminance
-      illuminance_s->set_name("Illuminance");
-      illuminance_s->set_unit_of_measurement("lux");
-      illuminance_s->set_accuracy_decimals(2);
-      illuminance_s->set_icon("mdi:white-balance-sunny");
-      illuminance_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
-      illuminance_s->set_device_class("illuminance");
-      App.register_sensor(illuminance_s);
-
-      // White light level
-      w_light_s->set_name("White light level");
-      w_light_s->set_accuracy_decimals(0);
-      w_light_s->set_icon("mdi:circle-outline");
-      w_light_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
-      w_light_s->set_device_class("illuminance");
-      App.register_sensor(w_light_s);
-
-      // Sound pressure level
-      sound_spl_s->set_name("Sound pressure level");
-      sound_spl_s->set_unit_of_measurement("dBA");
-      sound_spl_s->set_accuracy_decimals(1);
-      sound_spl_s->set_icon("mdi:microphone");
-      sound_spl_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
-      sound_spl_s->set_device_class("sound_pressure");
-      App.register_sensor(sound_spl_s);
-
-      // Peak sound amplitude
-      sound_peak_s->set_name("Peak sound amplitude");
-      sound_peak_s->set_unit_of_measurement("mPa");
-      sound_peak_s->set_accuracy_decimals(2);
-      sound_peak_s->set_icon("mdi:waveform");
-      sound_peak_s->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
-      sound_peak_s->set_device_class("sound_pressure");
-      App.register_sensor(sound_peak_s);
-
-      // Sound bands SPL sensors
-      sound_bands_s[0]->set_name("SPL at 125 Hz");
-      sound_bands_s[0]->set_unit_of_measurement("dB");
-      sound_bands_s[0]->set_accuracy_decimals(1);
-      sound_bands_s[0]->set_icon("mdi:sine-wave");
-      sound_bands_s[0]->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
-      sound_bands_s[0]->set_device_class("sound_pressure");
-      App.register_sensor(sound_bands_s[0]);
-
-      // SPL at 250 Hz
-      sound_bands_s[1]->set_name("SPL at 250 Hz");
-      sound_bands_s[1]->set_unit_of_measurement("dB");
-      sound_bands_s[1]->set_accuracy_decimals(1);
-      sound_bands_s[1]->set_icon("mdi:sine-wave");
-      sound_bands_s[1]->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
-      sound_bands_s[1]->set_device_class("sound_pressure");
-      App.register_sensor(sound_bands_s[1]);
-
-      // SPL at 500 Hz
-      sound_bands_s[2]->set_name("SPL at 500 Hz");
-      sound_bands_s[2]->set_unit_of_measurement("dB");
-      sound_bands_s[2]->set_accuracy_decimals(1);
-      sound_bands_s[2]->set_icon("mdi:sine-wave");
-      sound_bands_s[2]->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
-      sound_bands_s[2]->set_device_class("sound_pressure");
-      App.register_sensor(sound_bands_s[2]);
-
-      // SPL at 1000 Hz
-      sound_bands_s[3]->set_name("SPL at 1000 Hz");
-      sound_bands_s[3]->set_unit_of_measurement("dB");
-      sound_bands_s[3]->set_accuracy_decimals(1);
-      sound_bands_s[3]->set_icon("mdi:sine-wave");
-      sound_bands_s[3]->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
-      sound_bands_s[3]->set_device_class("sound_pressure");
-      App.register_sensor(sound_bands_s[3]);
-
-      // SPL at 2000 Hz
-      sound_bands_s[4]->set_name("SPL at 2000 Hz");
-      sound_bands_s[4]->set_unit_of_measurement("dB");
-      sound_bands_s[4]->set_accuracy_decimals(1);
-      sound_bands_s[4]->set_icon("mdi:sine-wave");
-      sound_bands_s[4]->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
-      sound_bands_s[4]->set_device_class("sound_pressure");
-      App.register_sensor(sound_bands_s[4]);
-
-      // SPL at 4000 Hz
-      sound_bands_s[5]->set_name("SPL at 4000 Hz");
-      sound_bands_s[5]->set_unit_of_measurement("dB");
-      sound_bands_s[5]->set_accuracy_decimals(1);
-      sound_bands_s[5]->set_icon("mdi:sine-wave");
-      sound_bands_s[5]->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
-      sound_bands_s[5]->set_device_class("sound_pressure");
-      App.register_sensor(sound_bands_s[5]);
-
-      ESP_LOGCONFIG(TAG, "setup sensors END");
-    }
-
-    float get_setup_priority() const override
-    {
+    float get_setup_priority() const override {
       return esphome::setup_priority::BUS;
     }
 
     // Initialize the I2C bus and the MS430 board
-    void setup() override
-    {
+    void setup() override {
       enableSerial = false;
-      setupSensors();
-      temperature_s->publish_state(NAN);
-      pressure_s->publish_state(NAN);
-      humidity_s->publish_state(NAN);
-      particle_duty_s->publish_state(NAN);
-      particle_conc_s->publish_state(NAN);
-      gas_s->publish_state(NAN);
-      aqi_s->publish_state(NAN);
-      CO2e_s->publish_state(NAN);
-      bVOC_s->publish_state(NAN);
-      aqi_acc_s->publish_state(NAN);
-      illuminance_s->publish_state(NAN);
-      w_light_s->publish_state(NAN);
-      sound_spl_s->publish_state(NAN);
-      sound_peak_s->publish_state(NAN);
 
       //SensorHardwareSetup(I2C_ADDRESS);
       /*
@@ -290,8 +112,7 @@ class MS430 :  public i2c::I2CDevice, public Component
       */
     }
 
-    void loop() override
-    {
+    void loop() override {
       /*
       if (ready_assertion_event)
       {
