@@ -28,6 +28,7 @@
 extern bool enableSerial;
 
 namespace esphome {
+namespace metriful_ms430 {
 using namespace sensor;
 
 class MS430 :  public i2c::I2CDevice, public Component
@@ -329,4 +330,5 @@ class MS430 :  public i2c::I2CDevice, public Component
     */
 };
 
+} // namespace metriful_ms430
 } // namespace esphome

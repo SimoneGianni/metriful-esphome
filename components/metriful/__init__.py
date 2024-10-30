@@ -6,7 +6,7 @@ import logging
 
 DEPENDENCIES = ["i2c"]
 
-metriful_component_ns = cg.esphome_ns.namespace("MS430_ESPHome")
+metriful_component_ns = cg.esphome_ns.namespace("metriful_ms430")
 MetrifulComponent = metriful_component_ns.class_("MS430", cg.Component, i2c.I2CDevice)
 
 
