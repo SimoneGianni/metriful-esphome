@@ -68,7 +68,7 @@ class MS430 :  public i2c::I2CDevice, public Component
     }
 
     void setupSensors() {
-      ESP_LOGI(TAG, "'%s' - setup sensors BEGIN", this->name_.c_str());
+      ESP_LOGI(TAG, "setup sensors BEGIN");
       // Temperature sensor
       App.register_sensor(temperature_s);
       temperature_s->set_name("Temperature");
@@ -243,7 +243,8 @@ class MS430 :  public i2c::I2CDevice, public Component
       sound_bands_s[5]->set_icon("mdi:sine-wave");
       sound_bands_s[5]->set_state_class(sensor::STATE_CLASS_MEASUREMENT);
       sound_bands_s[5]->set_device_class("sound_pressure");
-      ESP_LOGI(TAG, "'%s' - setup sensors END", this->name_.c_str());
+      
+      ESP_LOGI(TAG, "setup sensors END");
     }
 
     float get_setup_priority() const override
