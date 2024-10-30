@@ -17,6 +17,8 @@
 #include <stdint.h>
 #include "Metriful_sensor.h"
 #include "sensor_constants.h"
+#include "esphome/components/i2c/i2c.h"
+
 
 // Choose time interval for reading data (every 3, 100, or 300 seconds)
 // 100 or 300 seconds are recommended to avoid self-heating.
@@ -26,7 +28,7 @@
 
 extern bool enableSerial;
 
-class MS430 : public Component,  public i2c::I2CDevice
+class MS430 :  public i2c::I2CDevice, public Component
 {
   public:
     Sensor * temperature_s = new Sensor();

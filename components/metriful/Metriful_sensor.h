@@ -55,6 +55,83 @@
 #define SUBSCRIPT_2 "₂"
 #define OHM_SYMBOL "Ω"
 
+/////////////////////////////////////////////////////////////////////
+// ISR_ATTRIBUTE was in host_pin_definition.h
+
+#ifndef ARDUINO_PIN_DEFINITIONS_H
+#define ARDUINO_PIN_DEFINITIONS_H
+
+#ifdef ARDUINO_AVR_UNO
+
+  // Arduino Uno
+
+  #define ISR_ATTRIBUTE
+
+#elif defined ARDUINO_SAMD_NANO_33_IOT
+
+  // Arduino Nano 33 IoT
+
+  #include <SPI.h>
+  #include <WiFiNINA.h>
+  #define HAS_WIFI
+  #define ISR_ATTRIBUTE
+
+#elif defined ARDUINO_AVR_NANO
+
+  // Arduino Nano
+
+  #define ISR_ATTRIBUTE
+
+#elif defined ARDUINO_SAMD_MKRWIFI1010
+
+  // Arduino MKR WiFi 1010
+
+  #include <SPI.h>
+  #include <WiFiNINA.h>
+  #define HAS_WIFI
+  #define ISR_ATTRIBUTE
+
+#elif defined ESP8266
+
+  // The examples have been tested on NodeMCU and Wemos D1 Mini.
+  // Other ESP8266 boards may require changes.
+
+  #include <ESP8266WiFi.h>
+  #define HAS_WIFI
+  #define ISR_ATTRIBUTE IRAM_ATTR
+
+#elif defined ESP32
+
+  // The examples have been tested on DOIT ESP32 DEVKIT V1 development board.
+  // Other ESP32 boards may require changes.
+
+  #include <WiFi.h>
+  #define HAS_WIFI
+  #define ISR_ATTRIBUTE IRAM_ATTR
+
+#elif defined ARDUINO_ARCH_RP2040
+
+  // The examples have been tested on the official Raspberry Pi Pico and
+  // Pico W development boards. Other Pico/RP2040 boards may require changes.
+
+  #ifdef ARDUINO_RASPBERRY_PI_PICO_W
+    #include <WiFi.h>
+    #define HAS_WIFI
+  #endif
+
+  #define ISR_ATTRIBUTE
+
+#else
+  #error ("Your development board is not yet supported.")
+  // Please make a new section in this file to define
+  // the correct input/output pins.
+#endif
+
+#endif
+
+
+////
+
 extern volatile bool ready_assertion_event; 
 
 /////////////////////////////////////////////////////////////////////
