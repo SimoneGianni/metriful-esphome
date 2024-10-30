@@ -85,6 +85,7 @@ class MS430 :  public i2c::I2CDevice, public Component
 
       // Air pressure sensor
       pressure_s->set_name("Air pressure");
+      pressure_s->set_object_id("air_pressure");
       pressure_s->set_unit_of_measurement("Pa");
       pressure_s->set_accuracy_decimals(0);
       pressure_s->set_icon("mdi:weather-partly-rainy");
@@ -95,6 +96,7 @@ class MS430 :  public i2c::I2CDevice, public Component
 
       // Humidity sensor
       humidity_s->set_name("Humidity");
+      humidity_s->set_object_id("humidity")
       humidity_s->set_unit_of_measurement("%");
       humidity_s->set_accuracy_decimals(1);
       humidity_s->set_icon("mdi:cloud-percent");
