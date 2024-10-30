@@ -17,7 +17,6 @@
 #include <stdint.h>
 #include "Metriful_sensor.h"
 #include "sensor_constants.h"
-#include "esphome/components/i2c/i2c.h"
 
 
 // Choose time interval for reading data (every 3, 100, or 300 seconds)
@@ -29,6 +28,7 @@
 extern bool enableSerial;
 
 namespace esphome {
+using namespace sensor;
 
 class MS430 :  public i2c::I2CDevice, public Component
 {
