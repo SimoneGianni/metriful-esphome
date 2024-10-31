@@ -83,12 +83,13 @@ class MS430 :  public i2c::I2CDevice, public Component
     void set_sound_spl_sensor(Sensor *sensor) { this->sound_spl_s = sensor; }
     void set_sound_peak_sensor(Sensor *sensor) { this->sound_peak_s = sensor; }
 
-    // Sound band sensor setters for frequency bands
-    void set_sound_band_sensor(uint8_t index, Sensor *sensor) {
-      if (index < SOUND_FREQ_BANDS) {
-        this->sound_bands_s[index] = sensor;
-      }
-    }
+    // Separate setters for each sound frequency band
+    void set_spl_125hz_sensor(Sensor *sensor) {this->sound_bands_s[0] = sensor; };
+    void set_spl_250hz_sensor(Sensor *sensor) {this->sound_bands_s[1] = sensor; };
+    void set_spl_500hz_sensor(Sensor *sensor) {this->sound_bands_s[2] = sensor; };
+    void set_spl_1000hz_sensor(Sensor *sensor) {this->sound_bands_s[3] = sensor; };
+    void set_spl_2000hz_sensor(Sensor *sensor) {this->sound_bands_s[4] = sensor; };
+    void set_spl_4000hz_sensor(Sensor *sensor) {this->sound_bands_s[5] = sensor; };
 
     void dump_config() {
       ESP_LOGCONFIG(TAG, "In dump config");
