@@ -7,7 +7,7 @@ from esphome.const import (
     UNIT_DECIBEL, UNIT_MICROGRAMS_PER_CUBIC_METER, DEVICE_CLASS_TEMPERATURE, 
     DEVICE_CLASS_HUMIDITY, DEVICE_CLASS_PRESSURE, DEVICE_CLASS_SOUND_PRESSURE,
     DEVICE_CLASS_ILLUMINANCE, DEVICE_CLASS_AQI, DEVICE_CLASS_PM25, 
-    STATE_CLASS_MEASUREMENT, CONF_ID, CONF_DISABLED_BY_DEFAULT
+    STATE_CLASS_MEASUREMENT, CONF_ID, CONF_DISABLED_BY_DEFAULT, CONF_FORCE_UPDATE
 )
 import logging
 
@@ -86,7 +86,8 @@ async def to_code(config):
                 "icon": icon,
                 "device_class": device_class,
                 "state_class": STATE_CLASS_MEASUREMENT,
-                CONF_DISABLED_BY_DEFAULT: False
+                CONF_DISABLED_BY_DEFAULT: False,
+                CONF_FORCE_UPDATE: False
             })
         cg.add(getattr(var, f'set_{key}_sensor')(sens))
 
