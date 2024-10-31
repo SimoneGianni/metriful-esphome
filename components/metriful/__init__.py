@@ -2,7 +2,7 @@ import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.components import i2c, sensor
 from esphome.const import (
-    UNIT_CELSIUS, UNIT_PERCENT, UNIT_OHM, NIT_PARTS_PER_MILLION, UNIT_LUX, UNIT_PA, UNIT_DBA, 
+    UNIT_CELSIUS, UNIT_PERCENT, UNIT_OHM, UNIT_PARTS_PER_MILLION, UNIT_LUX, UNIT_PA, UNIT_DBA, 
     UNIT_DBC, UNIT_MICROGRAM_PER_CUBIC_METER, DEVICE_CLASS_TEMPERATURE, 
     DEVICE_CLASS_HUMIDITY, DEVICE_CLASS_PRESSURE, DEVICE_CLASS_SOUND_PRESSURE,
     DEVICE_CLASS_ILLUMINANCE, DEVICE_CLASS_AQI, DEVICE_CLASS_PM25, 
@@ -45,8 +45,8 @@ CONFIG_SCHEMA = cv.Schema(
         cv.Optional(CONF_PARTICLE_CONC, default=SENSOR_SCHEMA.unit_of_measurement(UNIT_MICROGRAM_PER_CUBIC_METER).accuracy_decimals(2).device_class(DEVICE_CLASS_PM25)): sensor.sensor_schema(),
         cv.Optional(CONF_GAS, default=SENSOR_SCHEMA.unit_of_measurement(UNIT_OHM).accuracy_decimals(0).device_class(DEVICE_CLASS_AQI)): sensor.sensor_schema(),
         cv.Optional(CONF_AQI, default=SENSOR_SCHEMA.accuracy_decimals(1).device_class(DEVICE_CLASS_AQI)): sensor.sensor_schema(),
-        cv.Optional(CONF_CO2E, default=SENSOR_SCHEMA.unit_of_measurement(NIT_PARTS_PER_MILLION).accuracy_decimals(1).device_class(DEVICE_CLASS_AQI)): sensor.sensor_schema(),
-        cv.Optional(CONF_BVOC, default=SENSOR_SCHEMA.unit_of_measurement(NIT_PARTS_PER_MILLION).accuracy_decimals(2).device_class(DEVICE_CLASS_AQI)): sensor.sensor_schema(),
+        cv.Optional(CONF_CO2E, default=SENSOR_SCHEMA.unit_of_measurement(UNIT_PARTS_PER_MILLION).accuracy_decimals(1).device_class(DEVICE_CLASS_AQI)): sensor.sensor_schema(),
+        cv.Optional(CONF_BVOC, default=SENSOR_SCHEMA.unit_of_measurement(UNIT_PARTS_PER_MILLION).accuracy_decimals(2).device_class(DEVICE_CLASS_AQI)): sensor.sensor_schema(),
         cv.Optional(CONF_AQI_ACC, default=SENSOR_SCHEMA.accuracy_decimals(0).device_class(DEVICE_CLASS_AQI)): sensor.sensor_schema(),
         cv.Optional(CONF_ILLUMINANCE, default=SENSOR_SCHEMA.unit_of_measurement(UNIT_LUX).accuracy_decimals(2).device_class(DEVICE_CLASS_ILLUMINANCE)): sensor.sensor_schema(),
         cv.Optional(CONF_W_LIGHT, default=SENSOR_SCHEMA.accuracy_decimals(0).device_class(DEVICE_CLASS_ILLUMINANCE)): sensor.sensor_schema(),
