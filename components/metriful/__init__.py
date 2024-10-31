@@ -79,8 +79,8 @@ async def to_code(config):
         else:
             sens = await sensor.new_sensor({
                 "id": {
-                    value: key,
-                    type: "Sensor"
+                    "value": key,
+                    "type": "Sensor"
                 },
                 "name": name,
                 "unit_of_measurement": unit,
