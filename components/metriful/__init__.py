@@ -52,7 +52,7 @@ CONFIG_SCHEMA = cv.Schema(
         cv.Optional(CONF_W_LIGHT, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, accuracy_decimals=0, device_class=DEVICE_CLASS_ILLUMINANCE)): sensor.sensor_schema(),
         cv.Optional(CONF_SOUND_SPL, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, unit_of_measurement="dBa", accuracy_decimals=1, device_class=DEVICE_CLASS_SOUND_PRESSURE)): sensor.sensor_schema(),
         cv.Optional(CONF_SOUND_PEAK, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, unit_of_measurement="mPa", accuracy_decimals=2, device_class=DEVICE_CLASS_SOUND_PRESSURE)): sensor.sensor_schema(),
-        cv.Optional(CONF_SOUND_BANDS, default=[sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, unit_of_measurement=UNIT_DECIBEL, accuracy_decimals=1, device_class=DEVICE_CLASS_SOUND_PRESSURE)] * 6): cv.All([sensor.sensor_schema()], cv.ensure_list_length(6)),
+        cv.Optional(CONF_SOUND_BANDS, default=[sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, unit_of_measurement=UNIT_DECIBEL, accuracy_decimals=1, device_class=DEVICE_CLASS_SOUND_PRESSURE)] * 6): cv.All([sensor.sensor_schema()]),
     }
 ).extend(cv.COMPONENT_SCHEMA).extend(i2c.i2c_device_schema(0x01))
 
