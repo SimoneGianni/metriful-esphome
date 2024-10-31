@@ -3,7 +3,7 @@ import esphome.config_validation as cv
 from esphome.components import i2c, sensor
 from esphome.const import (
     UNIT_CELSIUS, UNIT_PERCENT, UNIT_OHM, UNIT_PARTS_PER_MILLION, UNIT_LUX, UNIT_PASCAL, 
-    UNIT_DB, UNIT_MICROGRAM_PER_CUBIC_METER, DEVICE_CLASS_TEMPERATURE, 
+    UNIT_DECIBEL, UNIT_MICROGRAM_PER_CUBIC_METER, DEVICE_CLASS_TEMPERATURE, 
     DEVICE_CLASS_HUMIDITY, DEVICE_CLASS_PRESSURE, DEVICE_CLASS_SOUND_PRESSURE,
     DEVICE_CLASS_ILLUMINANCE, DEVICE_CLASS_AQI, DEVICE_CLASS_PM25, 
     STATE_CLASS_MEASUREMENT, CONF_ID
@@ -52,7 +52,7 @@ CONFIG_SCHEMA = cv.Schema(
         cv.Optional(CONF_W_LIGHT, default=SENSOR_SCHEMA.accuracy_decimals(0).device_class(DEVICE_CLASS_ILLUMINANCE)): sensor.sensor_schema(),
         cv.Optional(CONF_SOUND_SPL, default=SENSOR_SCHEMA.unit_of_measurement("dBa").accuracy_decimals(1).device_class(DEVICE_CLASS_SOUND_PRESSURE)): sensor.sensor_schema(),
         cv.Optional(CONF_SOUND_PEAK, default=SENSOR_SCHEMA.unit_of_measurement("mPa").accuracy_decimals(2).device_class(DEVICE_CLASS_SOUND_PRESSURE)): sensor.sensor_schema(),
-        cv.Optional(CONF_SOUND_BANDS, default=[SENSOR_SCHEMA.unit_of_measurement(UNIT_DB).accuracy_decimals(1).device_class(DEVICE_CLASS_SOUND_PRESSURE)] * 6): cv.All([sensor.sensor_schema()], cv.ensure_list_length(6)),
+        cv.Optional(CONF_SOUND_BANDS, default=[SENSOR_SCHEMA.unit_of_measurement(UNIT_DECIBEL).accuracy_decimals(1).device_class(DEVICE_CLASS_SOUND_PRESSURE)] * 6): cv.All([sensor.sensor_schema()], cv.ensure_list_length(6)),
     }
 ).extend(cv.COMPONENT_SCHEMA).extend(i2c.i2c_device_schema(0x01))
 
