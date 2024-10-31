@@ -39,22 +39,20 @@ CONFIG_SCHEMA = cv.Schema(
     {
         cv.GenerateID(): cv.declare_id(MetrifulComponent),
         cv.Optional(CONF_TEMPERATURE, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, unit_of_measurement=UNIT_CELSIUS, accuracy_decimals=1, device_class=DEVICE_CLASS_TEMPERATURE)): sensor.sensor_schema(),
-        """
-        cv.Optional(CONF_PRESSURE, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, unit_of_measurement=UNIT_PASCAL, accuracy_decimals=0, device_class=DEVICE_CLASS_PRESSURE)): sensor.sensor_schema(),
-        cv.Optional(CONF_HUMIDITY, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, unit_of_measurement=UNIT_PERCENT, accuracy_decimals=1, device_class=DEVICE_CLASS_HUMIDITY)): sensor.sensor_schema(),
-        cv.Optional(CONF_PARTICLE_DUTY, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, unit_of_measurement=UNIT_PERCENT, accuracy_decimals=2, device_class=DEVICE_CLASS_PM25)): sensor.sensor_schema(),
-        cv.Optional(CONF_PARTICLE_CONC, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, unit_of_measurement=UNIT_MICROGRAMS_PER_CUBIC_METER, accuracy_decimals=2, device_class=DEVICE_CLASS_PM25)): sensor.sensor_schema(),
-        cv.Optional(CONF_GAS, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, unit_of_measurement=UNIT_OHM, accuracy_decimals=0, device_class=DEVICE_CLASS_AQI)): sensor.sensor_schema(),
-        cv.Optional(CONF_AQI, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, accuracy_decimals=1, device_class=DEVICE_CLASS_AQI)): sensor.sensor_schema(),
-        cv.Optional(CONF_CO2E, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, unit_of_measurement=UNIT_PARTS_PER_MILLION, accuracy_decimals=1, device_class=DEVICE_CLASS_AQI)): sensor.sensor_schema(),
-        cv.Optional(CONF_BVOC, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, unit_of_measurement=UNIT_PARTS_PER_MILLION, accuracy_decimals=2, device_class=DEVICE_CLASS_AQI)): sensor.sensor_schema(),
-        cv.Optional(CONF_AQI_ACC, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, accuracy_decimals=0, device_class=DEVICE_CLASS_AQI)): sensor.sensor_schema(),
-        cv.Optional(CONF_ILLUMINANCE, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, unit_of_measurement=UNIT_LUX, accuracy_decimals=2, device_class=DEVICE_CLASS_ILLUMINANCE)): sensor.sensor_schema(),
-        cv.Optional(CONF_W_LIGHT, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, accuracy_decimals=0, device_class=DEVICE_CLASS_ILLUMINANCE)): sensor.sensor_schema(),
-        cv.Optional(CONF_SOUND_SPL, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, unit_of_measurement="dBa", accuracy_decimals=1, device_class=DEVICE_CLASS_SOUND_PRESSURE)): sensor.sensor_schema(),
-        cv.Optional(CONF_SOUND_PEAK, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, unit_of_measurement="mPa", accuracy_decimals=2, device_class=DEVICE_CLASS_SOUND_PRESSURE)): sensor.sensor_schema(),
-        cv.Optional(CONF_SOUND_BANDS, default=[sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, unit_of_measurement=UNIT_DECIBEL, accuracy_decimals=1, device_class=DEVICE_CLASS_SOUND_PRESSURE)] * 6): cv.All([sensor.sensor_schema()]),
-        """
+#        cv.Optional(CONF_PRESSURE, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, unit_of_measurement=UNIT_PASCAL, accuracy_decimals=0, device_class=DEVICE_CLASS_PRESSURE)): sensor.sensor_schema(),
+#        cv.Optional(CONF_HUMIDITY, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, unit_of_measurement=UNIT_PERCENT, accuracy_decimals=1, device_class=DEVICE_CLASS_HUMIDITY)): sensor.sensor_schema(),
+#        cv.Optional(CONF_PARTICLE_DUTY, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, unit_of_measurement=UNIT_PERCENT, accuracy_decimals=2, device_class=DEVICE_CLASS_PM25)): sensor.sensor_schema(),
+#        cv.Optional(CONF_PARTICLE_CONC, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, unit_of_measurement=UNIT_MICROGRAMS_PER_CUBIC_METER, accuracy_decimals=2, device_class=DEVICE_CLASS_PM25)): sensor.sensor_schema(),
+#        cv.Optional(CONF_GAS, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, unit_of_measurement=UNIT_OHM, accuracy_decimals=0, device_class=DEVICE_CLASS_AQI)): sensor.sensor_schema(),
+#        cv.Optional(CONF_AQI, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, accuracy_decimals=1, device_class=DEVICE_CLASS_AQI)): sensor.sensor_schema(),
+#        cv.Optional(CONF_CO2E, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, unit_of_measurement=UNIT_PARTS_PER_MILLION, accuracy_decimals=1, device_class=DEVICE_CLASS_AQI)): sensor.sensor_schema(),
+#        cv.Optional(CONF_BVOC, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, unit_of_measurement=UNIT_PARTS_PER_MILLION, accuracy_decimals=2, device_class=DEVICE_CLASS_AQI)): sensor.sensor_schema(),
+#        cv.Optional(CONF_AQI_ACC, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, accuracy_decimals=0, device_class=DEVICE_CLASS_AQI)): sensor.sensor_schema(),
+#        cv.Optional(CONF_ILLUMINANCE, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, unit_of_measurement=UNIT_LUX, accuracy_decimals=2, device_class=DEVICE_CLASS_ILLUMINANCE)): sensor.sensor_schema(),
+#        cv.Optional(CONF_W_LIGHT, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, accuracy_decimals=0, device_class=DEVICE_CLASS_ILLUMINANCE)): sensor.sensor_schema(),
+#        cv.Optional(CONF_SOUND_SPL, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, unit_of_measurement="dBa", accuracy_decimals=1, device_class=DEVICE_CLASS_SOUND_PRESSURE)): sensor.sensor_schema(),
+#        cv.Optional(CONF_SOUND_PEAK, default=sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, unit_of_measurement="mPa", accuracy_decimals=2, device_class=DEVICE_CLASS_SOUND_PRESSURE)): sensor.sensor_schema(),
+#        cv.Optional(CONF_SOUND_BANDS, default=[sensor.sensor_schema(state_class=STATE_CLASS_MEASUREMENT, unit_of_measurement=UNIT_DECIBEL, accuracy_decimals=1, device_class=DEVICE_CLASS_SOUND_PRESSURE)] * 6): cv.All([sensor.sensor_schema()]),
     }
 ).extend(cv.COMPONENT_SCHEMA).extend(i2c.i2c_device_schema(0x71))
 
