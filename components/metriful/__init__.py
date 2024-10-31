@@ -61,11 +61,11 @@ async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
     await cg.register_component(var, config)
     await i2c.register_i2c_device(var, config)
-    for key in [CONF_TEMPERATURE, CONF_PRESSURE, CONF_HUMIDITY, CONF_PARTICLE_DUTY, CONF_PARTICLE_CONC, CONF_GAS, CONF_AQI, CONF_CO2E, CONF_BVOC, CONF_AQI_ACC, CONF_ILLUMINANCE, CONF_W_LIGHT, CONF_SOUND_SPL, CONF_SOUND_PEAK]:
-        if key in config:
-            sens = await sensor.new_sensor(config[key])
-            cg.add(getattr(var, f'set_{key}_sensor')(sens))
+#    for key in [CONF_TEMPERATURE, CONF_PRESSURE, CONF_HUMIDITY, CONF_PARTICLE_DUTY, CONF_PARTICLE_CONC, CONF_GAS, CONF_AQI, CONF_CO2E, CONF_BVOC, CONF_AQI_ACC, CONF_ILLUMINANCE, CONF_W_LIGHT, CONF_SOUND_SPL, CONF_SOUND_PEAK]:
+#        if key in config:
+#            sens = await sensor.new_sensor(config[key])
+#            cg.add(getattr(var, f'set_{key}_sensor')(sens))
 
-    for i, band_sensor in enumerate(config[CONF_SOUND_BANDS]):
-        sens = await sensor.new_sensor(band_sensor)
-        cg.add(var.set_sound_band_sensor(i, sens))
+#    for i, band_sensor in enumerate(config[CONF_SOUND_BANDS]):
+#        sens = await sensor.new_sensor(band_sensor)
+#        cg.add(var.set_sound_band_sensor(i, sens))
