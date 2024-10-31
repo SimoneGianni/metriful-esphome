@@ -98,7 +98,7 @@ async def to_code(config):
     await configure_sensor(CONF_AQI, "Air quality index", None, 1, "mdi:flower-tulip-outline", DEVICE_CLASS_AQI)
     await configure_sensor(CONF_CO2E, "Estimated CO₂", UNIT_PARTS_PER_MILLION, 1, "mdi:molecule-co2", "carbon_dioxide")
     await configure_sensor(CONF_BVOC, "Equivalent breath VOC", UNIT_PARTS_PER_MILLION, 2, "mdi:account-voice", "volatile_organic_compounds_parts")
-    await configure_sensor(CONF_AQI_ACC, "Air quality accuracy", None, 0, None, DEVICE_CLASS_AQI)
+    await configure_sensor(CONF_AQI_ACC, "Air quality accuracy", None, 0, "mdi:scent", DEVICE_CLASS_AQI)
     await configure_sensor(CONF_ILLUMINANCE, "Illuminance", UNIT_LUX, 2, "mdi:white-balance-sunny", DEVICE_CLASS_ILLUMINANCE)
     await configure_sensor(CONF_W_LIGHT, "White light level", None, 0, "mdi:circle-outline", DEVICE_CLASS_ILLUMINANCE)
     await configure_sensor(CONF_SOUND_SPL, "Sound pressure level", "dBA", 1, "mdi:microphone", DEVICE_CLASS_SOUND_PRESSURE)
