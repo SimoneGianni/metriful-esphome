@@ -72,19 +72,19 @@ async def to_code(config):
     await cg.register_component(var, config)
     await i2c.register_i2c_device(var, config)
 
-    # Set up default configurations within to_code for each sensor
+    # Set up sensor configuration, falling back to defaults if not defined in config
     async def configure_sensor(key, name, unit, accuracy_decimals, icon, device_class):
         if key in config:
             sens = await sensor.new_sensor(config[key])
         else:
-            sens = await sensor.new_sensor(sensor.sensor_schema(
-                name=name,
-                unit_of_measurement=unit,
-                accuracy_decimals=accuracy_decimals,
-                icon=icon,
-                device_class=device_class,
-                state_class=STATE_CLASS_MEASUREMENT,
-            ))
+            sens = await sensor.new_sensor({
+                "name": name,
+                "unit_of_measurement": unit,
+                "accuracy_decimals": accuracy_decimals,
+                "icon": icon,
+                "device_class": device_class,
+                "state_class": STATE_CLASS_MEASUREMENT,
+            })
         cg.add(getattr(var, f'set_{key}_sensor')(sens))
 
     # Configure each sensor with the provided labels, units, and icons
