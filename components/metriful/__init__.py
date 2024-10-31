@@ -78,7 +78,7 @@ async def to_code(config):
             sens = await sensor.new_sensor(config[key])
         else:
             sens = await sensor.new_sensor({
-                "id": key,
+                "id": cv.declare_id(sensor.Sensor),
                 "name": name,
                 "unit_of_measurement": unit,
                 "accuracy_decimals": accuracy_decimals,
