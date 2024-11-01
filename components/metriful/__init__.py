@@ -128,5 +128,7 @@ async def to_code(config):
     cg.add(select_entity.set_initial_value(str(config[CONF_CYCLE_TIME])))
     cg.add(select_entity.set_internal(False))
 
-    cg.add(select_entity.add_on_state_callback(lambda state: cg.add(var.set_cycle_time(int(state)))))
+    callback = cg.new_Pvariable("on_state_callback", lambda: cg.RawExpression(f"[=](int state) {{ {var}.set_cycle_time(state); }}"))
+    cg.add(select_entity.add_on_state_callback(callback))
+    
     await select_entity.register()
