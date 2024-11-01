@@ -200,7 +200,7 @@ class MS430 :  public i2c::I2CDevice, public Component
     void loop() override {
       if (ready_assertion_event)
       {
-        ESP_LOGV(TAG, "Got assertion event");
+        ESP_LOGD(TAG, "Got assertion event");
         ready_assertion_event = false;
         if (this->cycle_time_changed)
         {
@@ -208,11 +208,11 @@ class MS430 :  public i2c::I2CDevice, public Component
           this->cycle_time_changed = false;
         }
         if (comm_state == 0) {
-          ESP_LOGV(TAG, "Resetting");
+          ESP_LOGD(TAG, "Resetting");
           this->transmitI2C(RESET_CMD, 0, 0);
           comm_state = 1;
         } else if (comm_state == 1) {
-          ESP_LOGV(TAG, "Setting cycle time and mode");
+          ESP_LOGD(TAG, "Setting cycle time and mode");
           uint8_t cyclePeriod = this->cycle_time;
           if (cyclePeriod >= 300) {
             cyclePeriod = 2;
@@ -225,6 +225,7 @@ class MS430 :  public i2c::I2CDevice, public Component
           this->transmitI2C(CYCLE_MODE_CMD, 0, 0);
           comm_state = 100;
         } else if (comm_state >= 100) {
+          ESP_LOGD(TAG, "Reading sensors");
           readSensors();
           if (comm_state == 100) {
             comm_state = 101;
