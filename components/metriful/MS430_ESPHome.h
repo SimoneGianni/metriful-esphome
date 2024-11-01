@@ -149,8 +149,10 @@ class MS430 :  public i2c::I2CDevice, public Component
       buffers[1].data = data;
       buffers[1].len = data_length;
       if (data_length > 0) {
+        ESP_LOGV(TAG, "Sending two buffers");
         return (bus_->writev(address_, buffers, 2, true) == i2c::ERROR_OK);
       } else {
+        ESP_LOGV(TAG, "Sending command only");
         return (bus_->writev(address_, buffers, 1, true) == i2c::ERROR_OK);
       }
     }
