@@ -26,7 +26,7 @@
 
 //////////////////////////////////////////////////////////////
 
-volatile bool ready_assertion_event = false;
+volatile bool ready_assertion_event = true;
 
 // This function is automatically called after a falling edge
 // (assertion) of READY and the flag variable is set true - it
@@ -70,7 +70,7 @@ class MS430 :  public i2c::I2CDevice, public Component
 
     int ready_pin = 0;
     int cycle_time = 0;
-    bool cycle_time_changed = false;
+    bool cycle_time_changed = true;
 
     MS430()
     {
