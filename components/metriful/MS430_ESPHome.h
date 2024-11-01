@@ -134,7 +134,7 @@ class MS430 :  public i2c::I2CDevice, public Component
       buffers[0].len = 1;
       buffers[1].data = data;
       buffers[1].len = data_length;
-      return (this->write(buffers, 2, true) == i2c::ERROR_OK);
+      return (bus_->writev(address_, buffers, 2, true) == i2c::ERROR_OK);
     }
 
     // Read data from the Metriful MS430 using the I2C ("two wire") interface.
@@ -151,7 +151,7 @@ class MS430 :  public i2c::I2CDevice, public Component
       i2c::WriteBuffer buffers[1];
       buffers[0].data = &commandRegister;
       buffers[0].len = 1;
-      if (this->write(buffers, 1, false) != i2c::ERROR_OK)
+      if (bus_->writev(buffers, 1, false) != i2c::ERROR_OK)
       {
         return false;
       }
