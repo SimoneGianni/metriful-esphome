@@ -180,7 +180,7 @@ class MS430 :  public i2c::I2CDevice, public Component
       ESP_LOGCONFIG(TAG, "Setting up MS430");
 
       pinMode(this->ready_pin, INPUT);
-      attachInterrupt(digitalPinToInterrupt(this-> ), ready_ISR, FALLING);
+      attachInterrupt(digitalPinToInterrupt(this->ready_pin), ready_ISR, FALLING);
 
 
 
@@ -209,7 +209,7 @@ class MS430 :  public i2c::I2CDevice, public Component
           }
           this->transmitI2C(CYCLE_TIME_PERIOD_REG, &cyclePeriod, 1);
           this->transmitI2C(CYCLE_MODE_CMD, 0, 0);
-        //}
+        }
         // output();
         ready_assertion_event = false;
       }
