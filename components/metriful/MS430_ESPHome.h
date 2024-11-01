@@ -111,6 +111,20 @@ class MS430 :  public i2c::I2CDevice, public Component
 
     void dump_config() {
       ESP_LOGCONFIG(TAG, "In dump config");
+      LOG_SENSOR("  ", "temperature_s", this->temperature_s);
+      LOG_SENSOR("  ", "pressure_s", this->pressure_s);
+      LOG_SENSOR("  ", "humidity_s", this->humidity_s);
+      LOG_SENSOR("  ", "particle_duty_s", this->particle_duty_s);
+      LOG_SENSOR("  ", "particle_conc_s", this->particle_conc_s);
+      LOG_SENSOR("  ", "gas_s", this->gas_s);
+      LOG_SENSOR("  ", "aqi_s", this->aqi_s);
+      LOG_SENSOR("  ", "CO2e_s", this->CO2e_s);
+      LOG_SENSOR("  ", "bVOC_s", this->bVOC_s);
+      LOG_SENSOR("  ", "aqi_acc_s", this->aqi_acc_s);
+      LOG_SENSOR("  ", "illuminance_s", this->illuminance_s);
+      LOG_SENSOR("  ", "w_light_s", this->w_light_s);
+      LOG_SENSOR("  ", "sound_spl_s", this->sound_spl_s);
+      LOG_SENSOR("  ", "sound_peak_s", this->sound_peak_s);
     }
 
     float get_setup_priority() const override {
@@ -163,6 +177,8 @@ class MS430 :  public i2c::I2CDevice, public Component
 
     // Initialize the I2C bus and the MS430 board
     void setup() override {
+      ESP_LOGCONFIG(TAG, "Setting up MS430");
+
       pinMode(this->ready_pin, INPUT);
       attachInterrupt(digitalPinToInterrupt(this->ready_pin), ready_ISR, FALLING);
 
@@ -177,8 +193,11 @@ class MS430 :  public i2c::I2CDevice, public Component
     void loop() override {
       if (ready_assertion_event)
       {
+        ESP_LOGV(TAG, "Got assertion event");
         if (this->cycle_time_changed)
         {
+          ESP_LOGV(TAG, "Updating cycle time");
+          this->cycle_time_changed = false;
           this->transmitI2C(RESET_CMD, 0, 0);
           uint8_t cyclePeriod = this->cycle_time;
           if (cyclePeriod >= 300) {
