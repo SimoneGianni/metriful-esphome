@@ -156,7 +156,7 @@ class MS430 :  public i2c::I2CDevice, public Component
         return false;
       }
 
-      this->read(&data, data_length);
+      this->read(data, data_length);
       return true;
     }
 
