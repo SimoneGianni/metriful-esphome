@@ -1,6 +1,6 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
-from esphome.components import i2c, sensor, select
+from esphome.components import i2c, sensor
 from esphome.components.sensor import StateClasses
 from esphome.core import (ID)
 from esphome.const import (
@@ -76,7 +76,7 @@ CONFIG_SCHEMA = cv.Schema(
 async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
     cg.add(var.set_ready_pin(config[CONF_READY_PIN]))
-    cg.add(var.set_dynamic_value(config[CONF_CYCLE_TIME]))
+    cg.add(var.set_cycle_time(config[CONF_CYCLE_TIME]))
     await cg.register_component(var, config)
     await i2c.register_i2c_device(var, config)
 
@@ -121,15 +121,3 @@ async def to_code(config):
     await configure_sensor(CONF_SPL_1000HZ, "SPL at 1000 Hz", UNIT_DECIBEL, 1, "mdi:sine-wave", DEVICE_CLASS_SOUND_PRESSURE)
     await configure_sensor(CONF_SPL_2000HZ, "SPL at 2000 Hz", UNIT_DECIBEL, 1, "mdi:sine-wave", DEVICE_CLASS_SOUND_PRESSURE)
     await configure_sensor(CONF_SPL_4000HZ, "SPL at 4000 Hz", UNIT_DECIBEL, 1, "mdi:sine-wave", DEVICE_CLASS_SOUND_PRESSURE)
-
-    select_entity = select.Select.new()
-    cg.add(select_entity.set_name("Cycle time"))
-    cg.add(select_entity.set_options([str(x) for x in CYCLE_TIME_OPTIONS]))
-    cg.add(select_entity.set_initial_value(str(config[CONF_CYCLE_TIME])))
-    cg.add(select_entity.set_internal(False))
-
-    callback_id = cg.ID("on_state_callback")
-    callback = cg.RawExpression(f"[=](int state) {{ {var}.set_cycle_time(state); }}")
-    cg.add(select_entity.add_on_state_callback(callback_id(callback)))
-    
-    await select_entity.register()
