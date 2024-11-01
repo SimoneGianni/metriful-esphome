@@ -198,6 +198,7 @@ class MS430 :  public i2c::I2CDevice, public Component
     }
 
     void loop() override {
+      ESP_LOGV(TAG, "In loop, comm_state: %d", comm_state);
       if (ready_assertion_event)
       {
         ESP_LOGD(TAG, "Got assertion event");
