@@ -151,7 +151,7 @@ class MS430 :  public i2c::I2CDevice, public Component
       i2c::WriteBuffer buffers[1];
       buffers[0].data = &commandRegister;
       buffers[0].len = 1;
-      if (bus_->writev(buffers, 1, false) != i2c::ERROR_OK)
+      if (bus_->writev(address_, buffers, 1, false) != i2c::ERROR_OK)
       {
         return false;
       }
