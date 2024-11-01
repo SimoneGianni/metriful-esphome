@@ -72,6 +72,7 @@ class MS430 :  public i2c::I2CDevice, public Component
     int cycle_time = 0;
     bool cycle_time_changed = true;
     int comm_state = 0;
+    long last_report = 0;
 
     MS430()
     {
@@ -198,11 +199,15 @@ class MS430 :  public i2c::I2CDevice, public Component
     }
 
     void loop() override {
-      ESP_LOGV(TAG, "In loop, comm_state: %d", comm_state);
-      if (ready_assertion_event)
-      {
+      if ((last_report + ((cycle_time * 1000) + 10000)) < millis()) {
+        ESP_LOGI(TAG, "Resetting for timeout");
+        ready_assertion_event = true;
+        comm_state = 0;
+      }
+      if (ready_assertion_event) {
         ESP_LOGD(TAG, "Got assertion event");
         ready_assertion_event = false;
+        last_report = millis();
         if (this->cycle_time_changed)
         {
           comm_state = 0;
@@ -243,8 +248,7 @@ class MS430 :  public i2c::I2CDevice, public Component
         } else if (comm_state == 104) {
           gas_s->publish_state(airDataF.G_Ohm);
         } else if (comm_state == 105) {
-          if (firstOutput)
-          {
+          if (firstOutput) {
             aqi_acc_s->publish_state(-1.0);
             firstOutput = false;
           }
@@ -272,13 +276,11 @@ class MS430 :  public i2c::I2CDevice, public Component
             bVOC_s->publish_state(airQualityDataF.bVOC);
           }
         } else if (comm_state == 110) {
-          if (PARTICLE_SENSOR != PARTICLE_SENSOR_OFF)
-          {
+          if (PARTICLE_SENSOR != PARTICLE_SENSOR_OFF) {
             particle_duty_s->publish_state(particleDataF.duty_cycle_pc);
           }
         } else if (comm_state == 111) {
-          if (PARTICLE_SENSOR != PARTICLE_SENSOR_OFF)
-          {
+          if (PARTICLE_SENSOR != PARTICLE_SENSOR_OFF) {
             particle_conc_s->publish_state(particleDataF.concentration);
           }
         } else if (comm_state == 112) {
@@ -313,8 +315,7 @@ class MS430 :  public i2c::I2CDevice, public Component
       airQualityDataF = getAirQualityDataF();
       lightDataF = getLightDataF();
       soundDataF = getSoundDataF();
-      if (PARTICLE_SENSOR != PARTICLE_SENSOR_OFF)
-      {
+      if (PARTICLE_SENSOR != PARTICLE_SENSOR_OFF) {
         particleDataF = getParticleDataF();
       }
     }
