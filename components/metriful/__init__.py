@@ -1,6 +1,6 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
-from esphome.components import i2c, sensor
+from esphome.components import i2c, sensor, select
 from esphome.components.sensor import StateClasses
 from esphome.core import (ID)
 from esphome.const import (
