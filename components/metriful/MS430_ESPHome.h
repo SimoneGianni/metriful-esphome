@@ -129,12 +129,12 @@ class MS430 :  public i2c::I2CDevice, public Component
     //
     bool transmitI2C(uint8_t commandRegister, const uint8_t * data, uint8_t data_length)
     {
-      WriteBuffer buffers[2];
+      i2c::WriteBuffer buffers[2];
       buffers[0].data = &commandRegister;
       buffers[0].len = 1;
       buffers[1].data = data;
       buffers[1].len = data_length;
-      return (this->write(buffers, 2, true) == ERROR_OK);
+      return (this->write(buffers, 2, true) == i2c::ERROR_OK);
     }
 
     // Read data from the Metriful MS430 using the I2C ("two wire") interface.
@@ -148,10 +148,10 @@ class MS430 :  public i2c::I2CDevice, public Component
     bool receiveI2C(uint8_t commandRegister,
                     uint8_t data[], uint8_t data_length)
     {
-      WriteBuffer buffers[1];
+      i2c::WriteBuffer buffers[1];
       buffers[0].data = &commandRegister;
       buffers[0].len = 1;
-      if (this->write(buffers, 1, false) != ERROR_OK)
+      if (this->write(buffers, 1, false) != i2c::ERROR_OK)
       {
         return false;
       }
@@ -184,7 +184,7 @@ class MS430 :  public i2c::I2CDevice, public Component
           if (cyclePeriod >= 300) {
             cyclePeriod = 2;
           } else if (cyclePeriod >= 100) {
-            cyclePerion = 1;
+            cyclePeriod = 1;
           } else {
             cyclePeriod = 0;
           }
@@ -345,6 +345,23 @@ class MS430 :  public i2c::I2CDevice, public Component
     // representation. Floats are easy to use for writing programs but require
     // greater memory and processing power resources, so may not always be
     // appropriate.
+
+    // Decode and convert the temperature as read from the MS430 (integer
+    // representation) into a float value 
+    float convertEncodedTemperatureToFloat(uint8_t T_C_int_with_sign,
+                                          uint8_t T_C_fr_1dp)
+    {
+      float temperature_C = ((float) (T_C_int_with_sign & TEMPERATURE_VALUE_MASK))
+                              + (((float) T_C_fr_1dp) / 10.0f);
+      if ((T_C_int_with_sign & TEMPERATURE_SIGN_MASK) != 0)
+      {
+        // The most-significant bit is set, which indicates that
+        // the temperature is negative
+        temperature_C = -temperature_C;
+      }
+      return temperature_C;
+    }
+
 
     void convertAirDataF(const AirData_t * airData_in, AirData_F_t * airDataF_out)
     {
