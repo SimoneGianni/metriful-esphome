@@ -39,6 +39,10 @@ CONF_SPL_2000HZ = "spl_2000hz"
 CONF_SPL_4000HZ = "spl_4000hz"
 
 CONF_READY_PIN = "ready_pin"
+CONF_CYCLE_TIME = "cycle_time"
+
+CYCLE_TIME_OPTIONS = [3, 100, 300]
+
 
 CONFIG_SCHEMA = cv.Schema(
     {
@@ -63,7 +67,8 @@ CONFIG_SCHEMA = cv.Schema(
         cv.Optional(CONF_SPL_1000HZ): sensor.sensor_schema(),
         cv.Optional(CONF_SPL_2000HZ): sensor.sensor_schema(),
         cv.Optional(CONF_SPL_4000HZ): sensor.sensor_schema(),
-        cv.Optional(CONF_READY_PIN, default=0): cv.int_
+        cv.Optional(CONF_READY_PIN, default=0): cv.int_,
+        cv.Optional(CONF_CYCLE_TIME, default=100): cv.one_of(*CYCLE_TIME_OPTIONS, int=True)
     }
 ).extend(cv.COMPONENT_SCHEMA).extend(i2c.i2c_device_schema(0x71))
 
@@ -71,6 +76,7 @@ CONFIG_SCHEMA = cv.Schema(
 async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
     cg.add(var.set_ready_pin(config[CONF_READY_PIN]))
+    cg.add(var.set_dynamic_value(config[CONF_CYCLE_TIME]))
     await cg.register_component(var, config)
     await i2c.register_i2c_device(var, config)
 
@@ -115,3 +121,12 @@ async def to_code(config):
     await configure_sensor(CONF_SPL_1000HZ, "SPL at 1000 Hz", UNIT_DECIBEL, 1, "mdi:sine-wave", DEVICE_CLASS_SOUND_PRESSURE)
     await configure_sensor(CONF_SPL_2000HZ, "SPL at 2000 Hz", UNIT_DECIBEL, 1, "mdi:sine-wave", DEVICE_CLASS_SOUND_PRESSURE)
     await configure_sensor(CONF_SPL_4000HZ, "SPL at 4000 Hz", UNIT_DECIBEL, 1, "mdi:sine-wave", DEVICE_CLASS_SOUND_PRESSURE)
+
+    select_entity = select.Select.new()
+    cg.add(select_entity.set_name("Cycle time"))
+    cg.add(select_entity.set_options([str(x) for x in CYCLE_TIME_OPTIONS]))
+    cg.add(select_entity.set_initial_value(str(config[CONF_CYCLE_TIME])))
+    cg.add(select_entity.set_internal(False))
+
+    cg.add(select_entity.add_on_state_callback(lambda state: cg.add(var.set_cycle_time(int(state)))))
+    await select_entity.register()

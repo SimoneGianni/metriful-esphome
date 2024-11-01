@@ -26,8 +26,6 @@
 
 //////////////////////////////////////////////////////////////
 
-extern bool enableSerial;
-
 namespace esphome {
 namespace metriful_ms430 {
 using namespace sensor;
@@ -61,6 +59,8 @@ class MS430 :  public i2c::I2CDevice, public Component
     bool AQIinitialized = false;
 
     int ready_pin = 0;
+    int cycle_time = 0;
+    bool cycle_time_changed = false;
 
     MS430()
     {
@@ -94,6 +94,10 @@ class MS430 :  public i2c::I2CDevice, public Component
     void set_spl_4000hz_sensor(Sensor *sensor) {this->sound_bands_s[5] = sensor; };
 
     void set_ready_pin(int pin) { this->ready_pin = pin; };
+    void set_cycle_time(int cycle_time) { 
+      this->cycle_time = cycle_time; 
+      this->cycle_time_changed = true;
+    };
 
     void dump_config() {
       ESP_LOGCONFIG(TAG, "In dump config");
@@ -105,15 +109,18 @@ class MS430 :  public i2c::I2CDevice, public Component
 
     // Initialize the I2C bus and the MS430 board
     void setup() override {
-      enableSerial = false;
+      pinMode(this->ready_pin, INPUT);
+      //attachInterrupt(digitalPinToInterrupt(this->ready_pin), ready_ISR, FALLING);
+      //TransmitI2C(RESET_CMD, 0, 0);
+      //uint8_t cyclePeriod = CYCLE_PERIOD;
+      //TransmitI2C(I2C_ADDRESS, CYCLE_TIME_PERIOD_REG, &cyclePeriod, 1);
+      //TransmitI2C(I2C_ADDRESS, CYCLE_MODE_CMD, 0, 0);
 
-      //SensorHardwareSetup(I2C_ADDRESS);
-      /*
+
+
+      /* TODO enable particle sensor setting
       uint8_t particleSensor = PARTICLE_SENSOR;
       TransmitI2C(I2C_ADDRESS, PARTICLE_SENSOR_SELECT_REG, &particleSensor, 1);
-      uint8_t cyclePeriod = CYCLE_PERIOD;
-      TransmitI2C(I2C_ADDRESS, CYCLE_TIME_PERIOD_REG, &cyclePeriod, 1);
-      TransmitI2C(I2C_ADDRESS, CYCLE_MODE_CMD, 0, 0);
       */
     }
 
