@@ -227,7 +227,7 @@ class MS430 :  public i2c::I2CDevice, public Component
           this->transmitI2C(CYCLE_MODE_CMD, 0, 0);
           comm_state = 100;
         } else if (comm_state >= 100) {
-          read();
+          readSensors();
           if (comm_state == 100) {
             comm_state = 101;
           }
@@ -251,7 +251,7 @@ class MS430 :  public i2c::I2CDevice, public Component
       }
     }
 
-    void read() {
+    void readSensors() {
       airDataF = getAirDataF();
       airQualityDataF = getAirQualityDataF();
       lightDataF = getLightDataF();
