@@ -209,7 +209,7 @@ class MS430 :  public i2c::I2CDevice, public Component
           }
           this->transmitI2C(CYCLE_TIME_PERIOD_REG, &cyclePeriod, 1);
           this->transmitI2C(CYCLE_MODE_CMD, 0, 0);
-        }
+        //}
         // output();
         ready_assertion_event = false;
       }
