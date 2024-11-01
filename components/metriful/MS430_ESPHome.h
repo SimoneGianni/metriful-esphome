@@ -227,12 +227,11 @@ class MS430 :  public i2c::I2CDevice, public Component
           this->transmitI2C(CYCLE_MODE_CMD, 0, 0);
           comm_state = 100;
         } else if (comm_state == 100) {
-          //output();
+          output();
         }
       }
     }
 
-    /*
     // Read data and send to Home Assistant
     void output()
     {
@@ -284,7 +283,6 @@ class MS430 :  public i2c::I2CDevice, public Component
         sound_bands_s[i]->publish_state(soundDataF.SPL_bands_dB[i]);
       }
     }
-    */
 
 
     ////////////////////////////////////////////////////////////////////////
