@@ -226,9 +226,95 @@ class MS430 :  public i2c::I2CDevice, public Component
           this->transmitI2C(CYCLE_TIME_PERIOD_REG, &cyclePeriod, 1);
           this->transmitI2C(CYCLE_MODE_CMD, 0, 0);
           comm_state = 100;
-        } else if (comm_state == 100) {
-          output();
+        } else if (comm_state >= 100) {
+          read();
+          if (comm_state == 100) {
+            comm_state = 101;
+          }
         }
+      }
+      if (comm_state == 101) {
+        sendB1();
+        comm_state++;
+      } else if (comm_state == 102) {
+        sendB2();
+        comm_state++;
+      } else if (comm_state == 103) {
+        sendB3();
+        comm_state++;
+      } else if (comm_state == 104) {
+        sendB4();
+        comm_state++;
+      } else if (comm_state == 105) {
+        sendB5();
+        comm_state = 100;
+      }
+    }
+
+    void read() {
+      airDataF = getAirDataF();
+      airQualityDataF = getAirQualityDataF();
+      lightDataF = getLightDataF();
+      soundDataF = getSoundDataF();
+      if (PARTICLE_SENSOR != PARTICLE_SENSOR_OFF)
+      {
+        particleDataF = getParticleDataF();
+      }
+    }
+
+    void sendB1() {
+      temperature_s->publish_state(airDataF.T_C);
+      pressure_s->publish_state(airDataF.P_Pa);
+      humidity_s->publish_state(airDataF.H_pc);
+    }
+
+    void sendB2() {
+      gas_s->publish_state(airDataF.G_Ohm);
+
+      // Only publish air quality values when the algorithm has
+      // initialized, and send initial dummy values to force update.
+      if (firstOutput)
+      {
+        aqi_acc_s->publish_state(-1.0);
+        firstOutput = false;
+      }
+      aqi_acc_s->publish_state(airQualityDataF.AQI_accuracy);
+      if (airQualityDataF.AQI_accuracy > 0)
+      {
+        AQIinitialized = true;
+      }
+      if (AQIinitialized)
+      {
+        if (firstAQIoutput)
+        {
+          aqi_s->publish_state(-1.0);
+          firstAQIoutput = false;
+        }
+        aqi_s->publish_state(airQualityDataF.AQI);
+        CO2e_s->publish_state(airQualityDataF.CO2e);
+        bVOC_s->publish_state(airQualityDataF.bVOC);
+      }
+    }
+
+    void sendB3() {
+      if (PARTICLE_SENSOR != PARTICLE_SENSOR_OFF)
+      {
+        particle_duty_s->publish_state(particleDataF.duty_cycle_pc);
+        particle_conc_s->publish_state(particleDataF.concentration);
+      }
+    }
+
+    void sendB4() {
+      illuminance_s->publish_state(lightDataF.illum_lux);
+      w_light_s->publish_state(lightDataF.white);
+      //
+      sound_spl_s->publish_state(soundDataF.SPL_dBA);
+      sound_peak_s->publish_state(soundDataF.peakAmp_mPa);
+    }
+
+    void sendB5() {
+      for (uint8_t i = 0; i < SOUND_FREQ_BANDS; i++) {
+        sound_bands_s[i]->publish_state(soundDataF.SPL_bands_dB[i]);
       }
     }
 
