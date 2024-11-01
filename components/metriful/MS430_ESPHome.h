@@ -302,6 +302,7 @@ class MS430 :  public i2c::I2CDevice, public Component
         } else  {
           comm_state = 100;
         }
+        comm_state++;
       }
     }
 
