@@ -235,13 +235,13 @@ class MS430 :  public i2c::I2CDevice, public Component
     // Read data and send to Home Assistant
     void output()
     {
-      airDataF = getAirDataF(I2C_ADDRESS);
-      airQualityDataF = getAirQualityDataF(I2C_ADDRESS);
-      lightDataF = getLightDataF(I2C_ADDRESS);
-      soundDataF = getSoundDataF(I2C_ADDRESS);
+      airDataF = getAirDataF();
+      airQualityDataF = getAirQualityDataF();
+      lightDataF = getLightDataF();
+      soundDataF = getSoundDataF();
       if (PARTICLE_SENSOR != PARTICLE_SENSOR_OFF)
       {
-        particleDataF = getParticleDataF(I2C_ADDRESS);
+        particleDataF = getParticleDataF();
         particle_duty_s->publish_state(particleDataF.duty_cycle_pc);
         particle_conc_s->publish_state(particleDataF.concentration);
       }
