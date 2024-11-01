@@ -299,8 +299,8 @@ class MS430 :  public i2c::I2CDevice, public Component
           sound_bands_s[4]->publish_state(soundDataF.SPL_bands_dB[4]);
         } else if (comm_state == 121) {
           sound_bands_s[5]->publish_state(soundDataF.SPL_bands_dB[5]);
-        } else  {
-          comm_state = 100;
+        } else {
+          comm_state = 99;
         }
         comm_state++;
       }
