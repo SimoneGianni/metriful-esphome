@@ -71,6 +71,7 @@ class MS430 :  public i2c::I2CDevice, public Component
     int ready_pin = 0;
     int cycle_time = 0;
     bool cycle_time_changed = true;
+    int comm_state = 0;
 
     MS430()
     {
@@ -200,11 +201,20 @@ class MS430 :  public i2c::I2CDevice, public Component
       if (ready_assertion_event)
       {
         ESP_LOGV(TAG, "Got assertion event");
-        //if (this->cycle_time_changed)
-        //{
-          ESP_LOGV(TAG, "Updating cycle time");
+        ready_assertion_event = false;
+        /*
+        if (this->cycle_time_changed)
+        {
+          comm_state = 0;
           this->cycle_time_changed = false;
+        }
+        */
+        if (comm_state == 0) {
+          ESP_LOGV(TAG, "Resetting");
           this->transmitI2C(RESET_CMD, 0, 0);
+          comm_state = 1;
+        } else if (comm_state == 1) {
+          ESP_LOGV(TAG, "Setting cycle time and mode");
           uint8_t cyclePeriod = this->cycle_time;
           if (cyclePeriod >= 300) {
             cyclePeriod = 2;
@@ -215,9 +225,10 @@ class MS430 :  public i2c::I2CDevice, public Component
           }
           this->transmitI2C(CYCLE_TIME_PERIOD_REG, &cyclePeriod, 1);
           this->transmitI2C(CYCLE_MODE_CMD, 0, 0);
-        //}
-        // output();
-        ready_assertion_event = false;
+          comm_state = 100;
+        } else if (comm_state == 100) {
+          //output();
+        }
       }
     }
 
