@@ -38,6 +38,8 @@ CONF_SPL_1000HZ = "spl_1000hz"
 CONF_SPL_2000HZ = "spl_2000hz"
 CONF_SPL_4000HZ = "spl_4000hz"
 
+CONF_READY_PIN = "ready_pin"
+
 CONFIG_SCHEMA = cv.Schema(
     {
         cv.GenerateID(): cv.declare_id(MetrifulComponent),
@@ -61,12 +63,14 @@ CONFIG_SCHEMA = cv.Schema(
         cv.Optional(CONF_SPL_1000HZ): sensor.sensor_schema(),
         cv.Optional(CONF_SPL_2000HZ): sensor.sensor_schema(),
         cv.Optional(CONF_SPL_4000HZ): sensor.sensor_schema(),
+        cv.Optional(CONF_READY_PIN, default=0): cv.int_
     }
 ).extend(cv.COMPONENT_SCHEMA).extend(i2c.i2c_device_schema(0x71))
 
 
 async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
+    cg.add(var.set_ready_pin(config[CONF_READY_PIN]))
     await cg.register_component(var, config)
     await i2c.register_i2c_device(var, config)
 

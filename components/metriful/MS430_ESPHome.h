@@ -60,6 +60,8 @@ class MS430 :  public i2c::I2CDevice, public Component
     bool firstAQIoutput = true;
     bool AQIinitialized = false;
 
+    int ready_pin = 0;
+
     MS430()
     {
       for (uint8_t i = 0; i < SOUND_FREQ_BANDS; i++)
@@ -90,6 +92,8 @@ class MS430 :  public i2c::I2CDevice, public Component
     void set_spl_1000hz_sensor(Sensor *sensor) {this->sound_bands_s[3] = sensor; };
     void set_spl_2000hz_sensor(Sensor *sensor) {this->sound_bands_s[4] = sensor; };
     void set_spl_4000hz_sensor(Sensor *sensor) {this->sound_bands_s[5] = sensor; };
+
+    void set_ready_pin(int pin) { this->ready_pin = pin; };
 
     void dump_config() {
       ESP_LOGCONFIG(TAG, "In dump config");
