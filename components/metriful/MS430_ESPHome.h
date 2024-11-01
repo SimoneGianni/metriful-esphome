@@ -26,6 +26,16 @@
 
 //////////////////////////////////////////////////////////////
 
+volatile bool ready_assertion_event = false;
+
+// This function is automatically called after a falling edge
+// (assertion) of READY and the flag variable is set true - it
+// must be set false again in the main program.
+void ISR_ATTRIBUTE ready_ISR(void)
+{
+  ready_assertion_event = true;
+}
+
 namespace esphome {
 namespace metriful_ms430 {
 using namespace sensor;
@@ -107,14 +117,54 @@ class MS430 :  public i2c::I2CDevice, public Component
       return esphome::setup_priority::BUS;
     }
 
+    ////////////////////////////////////////////////////////////////////////
+
+    // Send data to the Metriful MS430 using the I2C ("two wire") interface.
+    //
+    // Returns true on success, false on failure.
+    //
+    // commandRegister = the settings register/command code to be used.
+    // data = array containing the data to be sent.
+    // data_length = the number of bytes from the "data" array to be sent.
+    //
+    bool transmitI2C(uint8_t commandRegister, const uint8_t * data, uint8_t data_length)
+    {
+      WriteBuffer buffers[2];
+      buffers[0].data = &commandRegister;
+      buffers[0].len = 1;
+      buffers[1].data = data;
+      buffers[1].len = data_length;
+      return (this->write(buffers, 2, true) == ERROR_OK);
+    }
+
+    // Read data from the Metriful MS430 using the I2C ("two wire") interface.
+    //
+    // Returns true on success, false on failure.
+    //
+    // commandRegister = the settings register/data code to be used.
+    // data = array to store the received data.
+    // data_length = the number of bytes to read. 
+    //
+    bool receiveI2C(uint8_t commandRegister,
+                    uint8_t data[], uint8_t data_length)
+    {
+      WriteBuffer buffers[1];
+      buffers[0].data = &commandRegister;
+      buffers[0].len = 1;
+      if (this->write(buffers, 1, false) != ERROR_OK)
+      {
+        return false;
+      }
+
+      this->read(&data, data_length);
+      return true;
+    }
+
+
     // Initialize the I2C bus and the MS430 board
     void setup() override {
       pinMode(this->ready_pin, INPUT);
-      //attachInterrupt(digitalPinToInterrupt(this->ready_pin), ready_ISR, FALLING);
-      //TransmitI2C(RESET_CMD, 0, 0);
-      //uint8_t cyclePeriod = CYCLE_PERIOD;
-      //TransmitI2C(I2C_ADDRESS, CYCLE_TIME_PERIOD_REG, &cyclePeriod, 1);
-      //TransmitI2C(I2C_ADDRESS, CYCLE_MODE_CMD, 0, 0);
+      attachInterrupt(digitalPinToInterrupt(this->ready_pin), ready_ISR, FALLING);
 
 
 
@@ -125,13 +175,25 @@ class MS430 :  public i2c::I2CDevice, public Component
     }
 
     void loop() override {
-      /*
       if (ready_assertion_event)
       {
-        output();
+        if (this->cycle_time_changed)
+        {
+          this->transmitI2C(RESET_CMD, 0, 0);
+          uint8_t cyclePeriod = this->cycle_time;
+          if (cyclePeriod >= 300) {
+            cyclePeriod = 2;
+          } else if (cyclePeriod >= 100) {
+            cyclePerion = 1;
+          } else {
+            cyclePeriod = 0;
+          }
+          this->transmitI2C(CYCLE_TIME_PERIOD_REG, &cyclePeriod, 1);
+          this->transmitI2C(CYCLE_MODE_CMD, 0, 0);
+        }
+        // output();
         ready_assertion_event = false;
       }
-      */
     }
 
     /*
@@ -187,7 +249,162 @@ class MS430 :  public i2c::I2CDevice, public Component
       }
     }
     */
-};
+
+
+    ////////////////////////////////////////////////////////////////////////
+
+    // Convenience functions for reading data (integer representation)
+    //
+    // For each category of data (air, sound, etc.) a pointer to the data 
+    // struct is passed to the ReceiveI2C() function. The received byte 
+    // sequence fills the data struct in the correct order so that each 
+    // field within the struct receives the value of an environmental data
+    // quantity (temperature, sound level, etc.) 
+
+    SoundData_t getSoundData()
+    {
+      SoundData_t soundData = {0};
+      this->receiveI2C(SOUND_DATA_READ, (uint8_t *) &soundData, SOUND_DATA_BYTES);
+      return soundData;
+    }
+
+    AirData_t getAirData()
+    {
+      AirData_t airData = {0};
+      this->receiveI2C(AIR_DATA_READ, (uint8_t *) &airData, AIR_DATA_BYTES);
+      return airData;
+    }
+
+    LightData_t getLightData()
+    {
+      LightData_t lightData = {0};
+      this->receiveI2C(LIGHT_DATA_READ, (uint8_t *) &lightData, LIGHT_DATA_BYTES);
+      return lightData;
+    }
+
+    AirQualityData_t getAirQualityData()
+    {
+      AirQualityData_t airQualityData = {0};
+      this->receiveI2C(AIR_QUALITY_DATA_READ, (uint8_t *) &airQualityData, AIR_QUALITY_DATA_BYTES);
+      return airQualityData;
+    }
+
+    ParticleData_t getParticleData()
+    {
+      ParticleData_t particleData = {0};
+      this->receiveI2C(PARTICLE_DATA_READ, (uint8_t *) &particleData, PARTICLE_DATA_BYTES);
+      return particleData;
+    }
+
+    // Convenience functions for reading data (float representation)
+
+    SoundData_F_t getSoundDataF()
+    {
+      SoundData_F_t soundDataF = {0};
+      SoundData_t soundData = this->getSoundData();
+      this->convertSoundDataF(&soundData, &soundDataF);
+      return soundDataF;
+    }
+
+    AirData_F_t getAirDataF()
+    {
+      AirData_F_t airDataF = {0};
+      AirData_t airData = this->getAirData();
+      this->convertAirDataF(&airData, &airDataF);
+      return airDataF;
+    }
+
+    LightData_F_t getLightDataF()
+    {
+      LightData_F_t lightDataF = {0};
+      LightData_t lightData = this->getLightData();
+      this->convertLightDataF(&lightData, &lightDataF);
+      return lightDataF;
+    }
+
+    AirQualityData_F_t getAirQualityDataF()
+    {
+      AirQualityData_F_t airQualityDataF = {0};
+      AirQualityData_t airQualityData = this->getAirQualityData();
+      this->convertAirQualityDataF(&airQualityData, &airQualityDataF);
+      return airQualityDataF;
+    }
+
+    ParticleData_F_t getParticleDataF()
+    {
+      ParticleData_F_t particleDataF = {0};
+      ParticleData_t particleData = this->getParticleData();
+      this->convertParticleDataF(&particleData, &particleDataF);
+      return particleDataF;
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////
+
+    // Functions to convert data from integer representation to floating-point
+    // representation. Floats are easy to use for writing programs but require
+    // greater memory and processing power resources, so may not always be
+    // appropriate.
+
+    void convertAirDataF(const AirData_t * airData_in, AirData_F_t * airDataF_out)
+    {
+      // Decode the signed value for T (in Celsius)
+      airDataF_out->T_C = convertEncodedTemperatureToFloat(
+                            airData_in->T_C_int_with_sign,
+                            airData_in->T_C_fr_1dp);
+      airDataF_out->P_Pa = airData_in->P_Pa;
+      airDataF_out->H_pc = ((float) airData_in->H_pc_int)
+                            + (((float) airData_in->H_pc_fr_1dp) / 10.0f);
+      airDataF_out->G_Ohm = airData_in->G_ohm;
+    }
+
+    void convertAirQualityDataF(const AirQualityData_t * airQualityData_in, 
+                                    AirQualityData_F_t * airQualityDataF_out)
+    {
+      airQualityDataF_out->AQI =  ((float) airQualityData_in->AQI_int) + 
+                                (((float) airQualityData_in->AQI_fr_1dp) / 10.0f);
+      airQualityDataF_out->CO2e = ((float) airQualityData_in->CO2e_int) + 
+                                (((float) airQualityData_in->CO2e_fr_1dp) / 10.0f);
+      airQualityDataF_out->bVOC = ((float) airQualityData_in->bVOC_int) + 
+                                (((float) airQualityData_in->bVOC_fr_2dp) / 100.0f);
+      airQualityDataF_out->AQI_accuracy = airQualityData_in->AQI_accuracy;
+    }
+
+    void convertLightDataF(const LightData_t * lightData_in,
+                          LightData_F_t * lightDataF_out)
+    {
+      lightDataF_out->illum_lux = ((float) lightData_in->illum_lux_int)
+                              + (((float) lightData_in->illum_lux_fr_2dp) / 100.0f);
+      lightDataF_out->white = lightData_in->white;
+    }
+
+    void convertSoundDataF(const SoundData_t * soundData_in,
+                          SoundData_F_t * soundDataF_out)
+    {
+      soundDataF_out->SPL_dBA = ((float) soundData_in->SPL_dBA_int)
+                          + (((float) soundData_in->SPL_dBA_fr_1dp) / 10.0f);
+      for (uint16_t i = 0; i < SOUND_FREQ_BANDS; i++)
+      {
+        soundDataF_out->SPL_bands_dB[i] = ((float) soundData_in->SPL_bands_dB_int[i])
+                          + (((float) soundData_in->SPL_bands_dB_fr_1dp[i]) / 10.0f);
+      }
+      soundDataF_out->peakAmp_mPa = ((float) soundData_in->peak_amp_mPa_int)
+                          + (((float) soundData_in->peak_amp_mPa_fr_2dp) / 100.0f);
+      soundDataF_out->stable = (soundData_in->stable == 1);
+    }
+
+    void convertParticleDataF(const ParticleData_t * particleData_in,
+                              ParticleData_F_t * particleDataF_out)
+    {
+      particleDataF_out->duty_cycle_pc = ((float) particleData_in->duty_cycle_pc_int)
+                          + (((float) particleData_in->duty_cycle_pc_fr_2dp) / 100.0f);
+      particleDataF_out->concentration = ((float) particleData_in->concentration_int)
+                          + (((float) particleData_in->concentration_fr_2dp) / 100.0f);
+      particleDataF_out->valid = (particleData_in->valid == 1);
+    }
+
+
+  };
 
 } // namespace metriful_ms430
 } // namespace esphome
