@@ -14,12 +14,6 @@
 #include "sensor_constants.h"
 
 
-// Choose time interval for reading data (every 3, 100, or 300 seconds)
-// 100 or 300 seconds are recommended to avoid self-heating.
-#define CYCLE_PERIOD CYCLE_PERIOD_100_S
-
-//////////////////////////////////////////////////////////////
-
 volatile bool ready_assertion_event = true;
 
 // This function is automatically called after a falling edge
@@ -35,7 +29,7 @@ namespace metriful_ms430 {
 using namespace sensor;
 static const char *const TAG = "ms430";
 
-class MS430 :  public i2c::I2CDevice, public Component
+class OLD_MS430 :  public i2c::I2CDevice, public Component
 {
   public:
     Sensor * temperature_s = new Sensor();
@@ -68,10 +62,8 @@ class MS430 :  public i2c::I2CDevice, public Component
     int comm_state = 0;
     long last_report = 0;
 
-    MS430()
-    {
-      for (uint8_t i = 0; i < SOUND_FREQ_BANDS; i++)
-      {
+    MS430() {
+      for (uint8_t i = 0; i < SOUND_FREQ_BANDS; i++) {
         sound_bands_s[i] = new Sensor();
       }
     }
