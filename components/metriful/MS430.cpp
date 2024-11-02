@@ -82,6 +82,8 @@ void MS430::loop() {
       cycle_time_changed = false;
     }
 
+    uint8_t cyclePeriod;
+
     switch (comm_state) {
       case 0:
         ESP_LOGD(TAG, "Resetting");
@@ -90,7 +92,7 @@ void MS430::loop() {
         break;
       case 1:
         ESP_LOGD(TAG, "Setting cycle time and mode");
-        uint8_t cyclePeriod = this->cycle_time >= 300 ? CYCLE_PERIOD_300_S :
+        cyclePeriod = this->cycle_time >= 300 ? CYCLE_PERIOD_300_S :
                               this->cycle_time >= 100 ? CYCLE_PERIOD_100_S :
                               CYCLE_PERIOD_3_S;
         this->transmitI2C(CYCLE_TIME_PERIOD_REG, &cyclePeriod, 1);
