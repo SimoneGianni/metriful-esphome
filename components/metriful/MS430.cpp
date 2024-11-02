@@ -110,71 +110,71 @@ void MS430::loop() {
   // Publish sensor data based on the current state
   if (comm_state > 100) {
     if (comm_state == 101) {
-        temperature_s->publish_state(airDataF.T_C);
+      temperature_s->publish_state(airDataF.T_C);
     } else if (comm_state == 102) {
-        pressure_s->publish_state(airDataF.P_Pa);
+      pressure_s->publish_state(airDataF.P_Pa);
     } else if (comm_state == 103) {
-        humidity_s->publish_state(airDataF.H_pc);
+      humidity_s->publish_state(airDataF.H_pc);
     } else if (comm_state == 104) {
-        gas_s->publish_state(airDataF.G_Ohm);
+      gas_s->publish_state(airDataF.G_Ohm);
     } else if (comm_state == 105) {
-        if (firstOutput) {
+      if (firstOutput) {
         aqi_acc_s->publish_state(-1.0);
         firstOutput = false;
-        }
-        aqi_acc_s->publish_state(airQualityDataF.AQI_accuracy);
+      }
+      aqi_acc_s->publish_state(airQualityDataF.AQI_accuracy);
     } else if (comm_state == 106) {
-        if (airQualityDataF.AQI_accuracy > 0) {
+      if (airQualityDataF.AQI_accuracy > 0) {
         AQIinitialized = true;
-        }
-        if (AQIinitialized) {
+      }
+      if (AQIinitialized) {
         if (firstAQIoutput) {
             aqi_s->publish_state(-1.0);
             firstAQIoutput = false;
         }
-        }
+      }
     } else if (comm_state == 107) {
-        if (AQIinitialized) {
+      if (AQIinitialized) {
         aqi_s->publish_state(airQualityDataF.AQI);
-        }
+      }
     } else if (comm_state == 108) {
-        if (AQIinitialized) {
+      if (AQIinitialized) {
         CO2e_s->publish_state(airQualityDataF.CO2e);
-        }
+      }
     } else if (comm_state == 109) {
-        if (AQIinitialized) {
+      if (AQIinitialized) {
         bVOC_s->publish_state(airQualityDataF.bVOC);
-        }
+      }
     } else if (comm_state == 110) {
-        if (PARTICLE_SENSOR != PARTICLE_SENSOR_OFF) {
+      if (PARTICLE_SENSOR != PARTICLE_SENSOR_OFF) {
         particle_duty_s->publish_state(particleDataF.duty_cycle_pc);
-        }
+      }
     } else if (comm_state == 111) {
-        if (PARTICLE_SENSOR != PARTICLE_SENSOR_OFF) {
+      if (PARTICLE_SENSOR != PARTICLE_SENSOR_OFF) {
         particle_conc_s->publish_state(particleDataF.concentration);
-        }
+      }
     } else if (comm_state == 112) {
-        illuminance_s->publish_state(lightDataF.illum_lux);
+      illuminance_s->publish_state(lightDataF.illum_lux);
     } else if (comm_state == 113) {
-        w_light_s->publish_state(lightDataF.white);
+      w_light_s->publish_state(lightDataF.white);
     } else if (comm_state == 114) {
-        sound_spl_s->publish_state(soundDataF.SPL_dBA);
+      sound_spl_s->publish_state(soundDataF.SPL_dBA);
     } else if (comm_state == 115) {
-        sound_peak_s->publish_state(soundDataF.peakAmp_mPa);
+      sound_peak_s->publish_state(soundDataF.peakAmp_mPa);
     } else if (comm_state == 116) {
-        sound_bands_s[0]->publish_state(soundDataF.SPL_bands_dB[0]);
+      sound_bands_s[0]->publish_state(soundDataF.SPL_bands_dB[0]);
     } else if (comm_state == 117) {
-        sound_bands_s[1]->publish_state(soundDataF.SPL_bands_dB[1]);
+      sound_bands_s[1]->publish_state(soundDataF.SPL_bands_dB[1]);
     } else if (comm_state == 118) {
-        sound_bands_s[2]->publish_state(soundDataF.SPL_bands_dB[2]);
+      sound_bands_s[2]->publish_state(soundDataF.SPL_bands_dB[2]);
     } else if (comm_state == 119) {
-        sound_bands_s[3]->publish_state(soundDataF.SPL_bands_dB[3]);
+      sound_bands_s[3]->publish_state(soundDataF.SPL_bands_dB[3]);
     } else if (comm_state == 120) {
-        sound_bands_s[4]->publish_state(soundDataF.SPL_bands_dB[4]);
+      sound_bands_s[4]->publish_state(soundDataF.SPL_bands_dB[4]);
     } else if (comm_state == 121) {
-        sound_bands_s[5]->publish_state(soundDataF.SPL_bands_dB[5]);
+      sound_bands_s[5]->publish_state(soundDataF.SPL_bands_dB[5]);
     } else {
-        comm_state = 99;
+      comm_state = 99;
     }
     comm_state++;
   }
