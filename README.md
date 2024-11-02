@@ -40,6 +40,7 @@ i2c:
 # Metriful sensor setup, specifying the ready_pin, which is required
 metriful:
   ready_pin: 23
+  cycle_time: 100 # Optional, specity cycle time, can be 3, 100 or 300
 ```
 
 All available sensors (temperature, humidity, CO2, air quality, sound levels in various bands, etc.) will be reported in Home Assistant and updated by default every 100 seconds. Note that certain measurements, like air quality and CO2, may require some time to initialize.
