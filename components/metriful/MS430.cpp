@@ -250,6 +250,43 @@ ParticleData_t MS430::getParticleData() {
   return particleData;
 }
 
+// Convenience functions for reading data (float representation)
+
+SoundData_F_t MS430::getSoundDataF() {
+  SoundData_F_t soundDataF = {0};
+  SoundData_t soundData = this->getSoundData();
+  this->convertSoundDataF(&soundData, &soundDataF);
+  return soundDataF;
+}
+
+AirData_F_t MS430::getAirDataF() {
+  AirData_F_t airDataF = {0};
+  AirData_t airData = this->getAirData();
+  this->convertAirDataF(&airData, &airDataF);
+  return airDataF;
+}
+
+LightData_F_t MS430::getLightDataF() {
+  LightData_F_t lightDataF = {0};
+  LightData_t lightData = this->getLightData();
+  this->convertLightDataF(&lightData, &lightDataF);
+  return lightDataF;
+}
+
+AirQualityData_F_t MS430::getAirQualityDataF() {
+  AirQualityData_F_t airQualityDataF = {0};
+  AirQualityData_t airQualityData = this->getAirQualityData();
+  this->convertAirQualityDataF(&airQualityData, &airQualityDataF);
+  return airQualityDataF;
+}
+
+ParticleData_F_t MS430::getParticleDataF() {
+  ParticleData_F_t particleDataF = {0};
+  ParticleData_t particleData = this->getParticleData();
+  this->convertParticleDataF(&particleData, &particleDataF);
+  return particleDataF;
+}
+
 ////////////////////////////////////////////////////////////////////////
 
 // Functions to convert data from integer representation to floating-point
