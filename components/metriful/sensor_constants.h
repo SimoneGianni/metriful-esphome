@@ -1,14 +1,10 @@
 /*
   sensor_constants.h
 
-  This file defines constant values and data structures which are used
-  in the control of the Metriful MS430 board and the interpretation of
-  its output data. All values have been taken from the MS430 datasheet.
-
-  Copyright 2020-2023 Metriful Ltd.
   Licensed under the MIT License - for further details see LICENSE.txt
 
   For code examples, datasheet and user guide, visit
+  https://github.com/SimoneGianni/metriful-esphome
   https://github.com/metriful/sensor
 */
 
@@ -16,6 +12,75 @@
 #define SENSOR_CONSTANTS_H
 
 #include <stdint.h>
+#include <stdbool.h>
+
+// Specify which particle sensor is connected:
+#define PARTICLE_SENSOR PARTICLE_SENSOR_OFF
+// Define PARTICLE_SENSOR as:
+//    PARTICLE_SENSOR_PPD42    for the Shinyei PPD42
+//    PARTICLE_SENSOR_SDS011   for the Nova SDS011
+//    PARTICLE_SENSOR_OFF      if no sensor is connected
+
+/////////////////////////////////////////////////////////////////////
+// ISR_ATTRIBUTE was in host_pin_definition.h
+
+#ifndef ARDUINO_PIN_DEFINITIONS_H
+#define ARDUINO_PIN_DEFINITIONS_H
+
+#ifdef ARDUINO_AVR_UNO
+
+  // Arduino Uno
+
+  #define ISR_ATTRIBUTE
+
+#elif defined ARDUINO_SAMD_NANO_33_IOT
+
+  // Arduino Nano 33 IoT
+
+  #define ISR_ATTRIBUTE
+
+#elif defined ARDUINO_AVR_NANO
+
+  // Arduino Nano
+
+  #define ISR_ATTRIBUTE
+
+#elif defined ARDUINO_SAMD_MKRWIFI1010
+
+  // Arduino MKR WiFi 1010
+
+  #define ISR_ATTRIBUTE
+
+#elif defined ESP8266
+
+  // The examples have been tested on NodeMCU and Wemos D1 Mini.
+  // Other ESP8266 boards may require changes.
+
+  #define ISR_ATTRIBUTE IRAM_ATTR
+
+#elif defined ESP32
+
+  // The examples have been tested on DOIT ESP32 DEVKIT V1 development board.
+  // Other ESP32 boards may require changes.
+
+  #define ISR_ATTRIBUTE IRAM_ATTR
+
+#elif defined ARDUINO_ARCH_RP2040
+
+  // The examples have been tested on the official Raspberry Pi Pico and
+  // Pico W development boards. Other Pico/RP2040 boards may require changes.
+
+  #define ISR_ATTRIBUTE
+
+#else
+  #error ("Your development board is not yet supported.")
+  // Please make a new section in this file to define
+  // the correct input/output pins.
+#endif
+
+#endif
+
+
 
 ///////////////////////////////////////////////////////////
 // Register and command addresses:
@@ -76,17 +141,6 @@
 #define PARTICLE_VALID_READ 0x53
 
 ///////////////////////////////////////////////////////////
-
-// I2C address of sensor board: can select using solder bridge
-#define I2C_ADDR_7BIT_SB_OPEN   0x71   // if solder bridge is left open
-#define I2C_ADDR_7BIT_SB_CLOSED 0x70   // if solder bridge is soldered closed
-
-// Values for enabling/disabling of sensor functions
-#define ENABLED  1
-
-// Device modes
-#define STANDBY_MODE 0
-#define CYCLE_MODE   1
 
 // Sizes of data expected when setting interrupt thresholds
 #define LIGHT_INTERRUPT_THRESHOLD_BYTES 3
@@ -180,6 +234,63 @@ typedef struct __attribute__((packed))
   uint8_t  concentration_fr_2dp;
   uint8_t  valid;
 } ParticleData_t;
+
+
+/////////////////////////////////////////////////////////////////////
+
+// Data category structs containing floats. If floats are not wanted, 
+// use the integer-only struct versions in sensor_constants.h 
+
+typedef struct
+{
+  float SPL_dBA;
+  float SPL_bands_dB[SOUND_FREQ_BANDS];
+  float peakAmp_mPa;
+  bool  stable;
+} SoundData_F_t;
+
+typedef struct
+{
+  float    T_C;
+  uint32_t P_Pa;
+  float    H_pc;
+  uint32_t G_Ohm;
+} AirData_F_t;
+
+typedef struct
+{
+  float   AQI;
+  float   CO2e;
+  float   bVOC;
+  uint8_t AQI_accuracy;
+} AirQualityData_F_t;
+
+typedef struct
+{
+  float    illum_lux;
+  uint16_t white;
+} LightData_F_t;
+
+typedef struct
+{
+  float duty_cycle_pc;
+  float concentration;
+  bool valid;
+} ParticleData_F_t;
+
+/////////////////////////////////////////////////////////////////////
+
+// Custom type used to select the particle sensor being used (if any)
+typedef enum
+{
+  OFF    = PARTICLE_SENSOR_OFF,
+  PPD42  = PARTICLE_SENSOR_PPD42,
+  SDS011 = PARTICLE_SENSOR_SDS011
+} ParticleSensor_t;
+
+
+/////////////////////////////////////////////////////////////////////
+
 
 ///////////////////////////////////////////////////////////
 

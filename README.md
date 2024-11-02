@@ -1,56 +1,50 @@
-# Metriful MS430: ESP Home external component
+# Metriful MS430: ESPHome External Component
 
-The Metriful MS430 is a low power, high accuracy, smart sensor cluster for indoor environment monitoring. It operates via a simple I2C-compatible interface and measures eighteen variables including air quality, light and sound levels.
+The Metriful MS430 is a low-power, high-accuracy, smart sensor cluster for indoor environment monitoring. It operates via a simple I2C-compatible interface and measures eighteen variables, including air quality, light, and sound levels.
 
-This repository provides instructions and software examples for using the MS430 in an **ESP Home** system as an external component, so that integrating it is just few lines in the YAML and does not require a local ESP Home installation. 
+This repository provides instructions and software examples for integrating the MS430 with **ESPHome** as an external component. This approach simplifies integration, requiring only a few lines in the YAML file without needing a local ESPHome installation.
 
-Please refer to [Metriful repository](https://github.com/metriful/sensor) for more in depth information about the sensor itself, this repository is only about the ESP Home integration. 
-
+Please refer to the [Metriful repository](https://github.com/metriful/sensor) for detailed information about the sensor itself. This repository focuses solely on the ESPHome integration.
 
 ## ESPHome for Home Assistant
 
-Send sensor data to an installation of [Home Assistant](https://www.home-assistant.io) using the [ESPHome system](https://esphome.io).
+Send sensor data to an instance of [Home Assistant](https://www.home-assistant.io) using the [ESPHome system](https://esphome.io).
 
-These instructions assume that you already have a working Home Assistant installation and you know what ESP Home is and how to stup a basic ESP Home peripheral.
+These instructions assume you have an existing Home Assistant installation and a basic understanding of ESPHome.
 
-To add the Metriful MS430 to your ESP Home perfipherals proceed as follows:
+To add the Metriful MS430 to your ESPHome peripherals, proceed as follows:
 
-1. Connect the MS430 I2C SDA and SCL pins to two suitable pins of the ESP.
+1. Connect the MS430's I2C SDA and SCL pins to two suitable pins on the ESP.
+2. Connect the MS430's RDY pin to a free GPIO pin on your ESP.
+3. Add this repository as an external component in your ESPHome YAML file.
+4. Configure the I2C settings in your ESPHome YAML file with the pins used for the MS430.
+5. Specify the GPIO pin for the RDY line in the Metriful sensor configuration.
+6. Let ESPHome update your device.
 
-2. Connect the MS430 RDY pin to a free GPIO pin on your ESP.
+Example configuration:
 
-4. Add to your ESP Home YAML file the external component refercing this repository.
-
-5. Configure the ESP Home I2C settings in your ESP Home YAML file with the pins you used to connect the MS430.
-
-6. Configure the Metriful sensor in you ESP Home YAML with the pin you used for the RDY line.
-
-7. Let ESP Home update you device.
-
-Done.
-
-For example, having I2C on pins 19 and 22, and the RDY connected to pin 23, this is the resulting YAML snippet.
+Assuming I2C is connected to pins 19 and 22, and RDY is connected to pin 23, your YAML configuration would look like this:
 
 ```yaml
-# Reference this repository so that ESP Home can use the code here
+# Reference this repository so that ESPHome can use the code here
 external_components:
   - source: 
       type: git
       url: https://github.com/SimoneGianni/metriful-esphome
 
-# Configure I2C on the proper pins (may be already setup for other peripherals)
+# Configure I2C on the proper pins (may already be set up for other peripherals)
 i2c:
   sda: 19
   scl: 22
 
-# Metriful sensor setup, specify the ready_pin, that's required
+# Metriful sensor setup, specifying the ready_pin, which is required
 metriful:
   ready_pin: 23
 ```
 
-All the available sensors (temperature, humidity, CO2, air quality, sound in various bands etc..) will be reported on your Home Assistant, and updated by default every 100 seconds; notice that air quality ones will need some time to initialize and report values, this includes CO2 and others. 
+All available sensors (temperature, humidity, CO2, air quality, sound levels in various bands, etc.) will be reported in Home Assistant and updated by default every 100 seconds. Note that certain measurements, like air quality and CO2, may require some time to initialize.
 
-You can customize all the sensors as you want:
+You can customize all sensor configurations to fit your needs:
 
 ```
 TODO example of customization
@@ -58,19 +52,24 @@ TODO example of customization
 
 ## Troubleshooting
 
-I cannot support users problems, so please refer to [Metriful repository](https://github.com/metriful/sensor) for troubleshooting the sensor and it's working with an ESP platform. Report issues if you're sure it is a problem with the ESP Home integration, and obviously feel free to also provide a PR.
-
+Direct support for individual problems is not provided. Please refer to the [Metriful repository](https://github.com/metriful/sensor) for troubleshooting the sensor and its compatibility with ESP platforms. If you encounter issues specific to the ESPHome integration, feel free to open an issue or submit a pull request.
 
 ## Changelog
 
-Changes, fixes and additions in each software release version are listed in the [CHANGELOG](CHANGELOG.md)
-
+Changes, fixes, and additions for each software release version are listed in the [CHANGELOG](CHANGELOG.md).
 
 ## License
 
 See the [LICENSE](LICENSE.txt) file for software license rights and limitations (MIT).
 
-
 ## Disclaimer
 
-This document and repository, and the products described herein, are subject to specific disclaimers set forth in the [DISCLAIMER](DISCLAIMER.txt) file.
+This document, repository, and the products described herein are subject to specific disclaimers set forth in the [DISCLAIMER](DISCLAIMER.txt) file.
+```
+
+### Key improvements:
+1. **Grammar and Consistency**: Adjusted phrasing for conciseness and flow.
+2. **Clarity**: Made steps clear and distinct, improving readability.
+3. **Terminology**: Adjusted terminology to ensure accuracy and precision, especially around "ESPHome peripheral" vs. "ESP device."
+
+Let me know if you’d like further customization or detail!

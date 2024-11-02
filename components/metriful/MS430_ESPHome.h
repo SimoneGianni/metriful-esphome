@@ -11,7 +11,6 @@
 #include "esphome.h"
 #include "esphome/core/log.h"
 #include <stdint.h>
-#include "Metriful_sensor.h"
 #include "sensor_constants.h"
 
 
@@ -187,7 +186,7 @@ class MS430 :  public i2c::I2CDevice, public Component
 
       /* TODO enable particle sensor setting
       uint8_t particleSensor = PARTICLE_SENSOR;
-      TransmitI2C(I2C_ADDRESS, PARTICLE_SENSOR_SELECT_REG, &particleSensor, 1);
+      TransmitI2C(PARTICLE_SENSOR_SELECT_REG, &particleSensor, 1);
       */
     }
 
@@ -214,11 +213,11 @@ class MS430 :  public i2c::I2CDevice, public Component
           ESP_LOGD(TAG, "Setting cycle time and mode");
           uint8_t cyclePeriod = this->cycle_time;
           if (cyclePeriod >= 300) {
-            cyclePeriod = 2;
+            cyclePeriod = CYCLE_PERIOD_300_S;
           } else if (cyclePeriod >= 100) {
-            cyclePeriod = 1;
+            cyclePeriod = CYCLE_PERIOD_100_S;
           } else {
-            cyclePeriod = 0;
+            cyclePeriod = CYCLE_PERIOD_3_S;
           }
           this->transmitI2C(CYCLE_TIME_PERIOD_REG, &cyclePeriod, 1);
           this->transmitI2C(CYCLE_MODE_CMD, 0, 0);
