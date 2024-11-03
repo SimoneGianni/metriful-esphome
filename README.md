@@ -66,11 +66,3 @@ See the [LICENSE](LICENSE.txt) file for software license rights and limitations 
 ## Disclaimer
 
 This document, repository, and the products described herein are subject to specific disclaimers set forth in the [DISCLAIMER](DISCLAIMER.txt) file.
-```
-
-### Key improvements:
-1. **Grammar and Consistency**: Adjusted phrasing for conciseness and flow.
-2. **Clarity**: Made steps clear and distinct, improving readability.
-3. **Terminology**: Adjusted terminology to ensure accuracy and precision, especially around "ESPHome peripheral" vs. "ESP device."
-
-Let me know if you’d like further customization or detail!
